@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DVISION — Miniatures YouTube qui dominent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0505;
+  --bg2: #110808;
+  --bordeaux: #7c1b1b;
+  --bordeaux-light: #a82222;
+  --bordeaux-glow: rgba(140,25,25,0.35);
+  --bordeaux-glow2: rgba(180,30,30,0.15);
+  --red-accent: #c0392b;
+  --text: #f0e8e8;
+  --text-muted: #9a8080;
+  --text-dim: #6a5555;
+  --card-bg: rgba(255,255,255,0.03);
+  --card-border: rgba(255,255,255,0.07);
+  --card-hover: rgba(140,25,25,0.12);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ── ANIMATED BACKGROUND ── */
+.bg-canvas {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  overflow: hidden;
+}
+.bg-orb {
+  position: absolute; border-radius: 50%; filter: blur(120px);
+  animation: orbFloat 18s ease-in-out infinite;
+}
+.bg-orb.o1 {
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(120,20,20,0.55) 0%, transparent 70%);
+  top: -200px; left: -200px;
+  animation-duration: 20s;
+}
+.bg-orb.o2 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(100,15,15,0.4) 0%, transparent 70%);
+  bottom: -150px; right: -150px;
+  animation-duration: 25s; animation-delay: -8s;
+}
+.bg-orb.o3 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(180,30,30,0.2) 0%, transparent 70%);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  animation-duration: 30s; animation-delay: -15s;
+}
+@keyframes orbFloat {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(60px,-40px) scale(1.08); }
+  66% { transform: translate(-40px,30px) scale(0.94); }
+}
+
+/* ── NOISE OVERLAY ── */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.6;
+}
+
+/* ── LAYOUT WRAPPER ── */
+.page { position: relative; z-index: 2; }
+
+/* ── HEADER ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 5vw;
+  background: rgba(10,5,5,0.6);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: padding 0.3s;
+}
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: 1.5rem;
+  letter-spacing: 0.08em;
+  color: #fff;
+}
+.logo span { color: var(--red-accent); }
+
+nav { display: flex; gap: 6px; align-items: center; }
+nav a {
+  color: var(--text-muted); font-size: 0.88rem; font-weight: 400;
+  text-decoration: none; padding: 8px 14px; border-radius: 100px;
+  transition: color 0.2s, background 0.2s;
+}
+nav a:hover { color: #fff; background: rgba(255,255,255,0.06); }
+
+.header-right { display: flex; gap: 12px; align-items: center; }
+
+.btn-instagram {
+  display: flex; align-items: center; gap: 8px;
+  color: var(--text-muted); font-size: 0.85rem;
+  text-decoration: none; padding: 8px 16px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 100px;
+  transition: all 0.2s;
+}
+.btn-instagram:hover { color: #fff; border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.04); }
+.btn-instagram svg { width: 16px; height: 16px; }
+
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+.hamburger span { display: block; width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: all 0.3s; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 120px 5vw 80px;
+  position: relative;
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(192,57,43,0.12);
+  border: 1px solid rgba(192,57,43,0.3);
+  border-radius: 100px;
+  padding: 6px 18px; font-size: 0.82rem;
+  color: #ff7a7a; margin-bottom: 32px;
+  animation: fadeUp 0.8s ease both;
+}
+.hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--red-accent); }
+
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: clamp(2.4rem, 6vw, 5rem);
+  line-height: 1.08; letter-spacing: -0.02em;
+  max-width: 900px;
+  animation: fadeUp 0.8s ease 0.15s both;
+}
+.hero h1 em {
+  font-style: italic; font-weight: 400;
+  color: var(--red-accent);
+}
+
+.hero-sub {
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  color: var(--text-muted); max-width: 580px;
+  line-height: 1.6; margin-top: 24px;
+  animation: fadeUp 0.8s ease 0.3s both;
+}
+
+.hero-cta {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  justify-content: center; margin-top: 40px;
+  animation: fadeUp 0.8s ease 0.45s both;
+}
+
+.btn-primary {
+  background: #fff; color: #111;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600; font-size: 0.95rem;
+  border: none; border-radius: 100px;
+  padding: 16px 32px; cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-primary:hover { transform: scale(1.04); box-shadow: 0 0 40px rgba(255,255,255,0.25); }
+
+.btn-outline {
+  background: transparent; color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500; font-size: 0.95rem;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 100px;
+  padding: 16px 32px; cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+  transition: transform 0.2s, border-color 0.2s, background 0.2s;
+}
+.btn-outline:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.4); }
+
+.hero-stats {
+  display: flex; gap: clamp(20px, 4vw, 60px); flex-wrap: wrap;
+  justify-content: center; margin-top: 60px;
+  animation: fadeUp 0.8s ease 0.6s both;
+}
+.stat { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--text-muted); }
+.stat-icon { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.stat-icon.red { background: rgba(192,57,43,0.2); }
+.stat strong { color: var(--text); }
+
+/* ── SECTIONS COMMON ── */
+section { padding: 100px 5vw; position: relative; }
+.section-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--red-accent); margin-bottom: 20px;
+}
+.section-label::before { content: ''; width: 24px; height: 1px; background: var(--red-accent); }
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1.12; letter-spacing: -0.02em;
+}
+.section-sub { color: var(--text-muted); font-size: 1.05rem; line-height: 1.6; margin-top: 14px; max-width: 560px; }
+.text-center { text-align: center; }
+.text-center .section-label { justify-content: center; }
+.text-center .section-sub { margin: 14px auto 0; }
+
+/* Reveal animation */
+.reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal.delay-1 { transition-delay: 0.1s; }
+.reveal.delay-2 { transition-delay: 0.2s; }
+.reveal.delay-3 { transition-delay: 0.3s; }
+
+/* ── SHOWCASE ── */
+.showcase { background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 50%, var(--bg) 100%); }
+.showcase-header { max-width: 700px; margin: 0 auto 60px; }
+
+.thumbnails-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 1100px; margin: 0 auto;
+  perspective: 1200px;
+}
+
+.thumb-card {
+  border-radius: 12px; overflow: hidden;
+  position: relative; aspect-ratio: 16/9;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+.thumb-card:hover {
+  transform: scale(1.04) rotateY(-4deg) rotateX(2deg);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px var(--bordeaux-glow);
+}
+
+/* Abstract thumbnail designs — no people */
+.thumb-inner {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+
+/* Thumb 1 — Gaming */
+.t1 { background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2a 50%, #0a0015 100%); }
+.t1::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(100,0,200,0.4) 0%, transparent 60%);
+}
+.t1-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: flex-start; padding: 16px; width: 100%; }
+.t1-label { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(0.8rem, 2.5vw, 1.4rem); color: #fff; text-shadow: 0 0 20px rgba(150,50,255,0.8); }
+.t1-sub { font-size: clamp(0.5rem, 1.5vw, 0.75rem); color: rgba(255,255,255,0.5); margin-top: 4px; }
+.t1-geo { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); width: clamp(30px, 8vw, 60px); height: clamp(30px, 8vw, 60px); border: 3px solid rgba(150,50,255,0.6); border-radius: 50%; box-shadow: 0 0 20px rgba(150,50,255,0.4); }
+
+/* Thumb 2 — Business */
+.t2 { background: linear-gradient(135deg, #050f08 0%, #0a1a0f 100%); }
+.t2-bars { position: absolute; bottom: 16px; right: 16px; display: flex; align-items: flex-end; gap: 4px; }
+.t2-bars span { width: 8px; background: rgba(0,220,100,0.7); border-radius: 2px 2px 0 0; }
+.t2-content { position: relative; z-index: 2; padding: 16px; }
+.t2-label { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(0.8rem, 2.5vw, 1.4rem); color: #fff; }
+.t2-arrow { font-size: clamp(1.5rem, 4vw, 2.5rem); color: #00dc64; line-height: 1; }
+.t2-glow { position: absolute; top: 0; right: 0; width: 40%; height: 100%; background: radial-gradient(ellipse at right center, rgba(0,200,80,0.2) 0%, transparent 70%); }
+
+/* Thumb 3 — Education */
+.t3 { background: linear-gradient(135deg, #100a05 0%, #1e1008 100%); }
+.t3-circle { position: absolute; right: -20px; top: 50%; transform: translateY(-50%); width: clamp(60px, 15vw, 120px); height: clamp(60px, 15vw, 120px); border-radius: 50%; background: rgba(255,140,0,0.15); border: 2px solid rgba(255,140,0,0.3); }
+.t3-content { position: relative; z-index: 2; padding: 16px; }
+.t3-label { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(0.8rem, 2.5vw, 1.4rem); color: #fff; }
+.t3-tag { display: inline-block; background: rgba(255,140,0,0.2); border: 1px solid rgba(255,140,0,0.4); border-radius: 4px; padding: 2px 8px; font-size: clamp(0.45rem, 1.2vw, 0.65rem); color: #ff9a30; margin-top: 6px; }
+
+/* Thumb 4 — Tech */
+.t4 { background: linear-gradient(135deg, #050a12 0%, #0a1520 100%); }
+.t4-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,120,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,120,255,0.1) 1px, transparent 1px); background-size: 20px 20px; }
+.t4-content { position: relative; z-index: 2; padding: 16px; }
+.t4-label { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(0.8rem, 2.5vw, 1.4rem); color: #fff; }
+.t4-hex { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); width: clamp(35px, 8vw, 60px); height: clamp(40px, 9vw, 70px); background: rgba(0,120,255,0.15); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); border: none; box-shadow: 0 0 20px rgba(0,120,255,0.3); }
+
+/* Thumb 5 — Cuisine */
+.t5 { background: linear-gradient(135deg, #0f0808 0%, #1a0f08 100%); }
+.t5-content { position: relative; z-index: 2; padding: 16px; width: 100%; }
+.t5-label { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(0.8rem, 2.5vw, 1.4rem); color: #fff; }
+.t5-lines { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 4px; }
+.t5-lines span { height: 2px; background: rgba(255,100,0,0.6); border-radius: 2px; }
+.t5-glow { position: absolute; bottom: 0; left: 0; right: 0; height: 50%; background: linear-gradient(0deg, rgba(255,80,0,0.12) 0%, transparent 100%); }
+
+/* Thumb 6 — News */
+.t6 { background: linear-gradient(135deg, #0c0505 0%, #180808 100%); }
+.t6-content { position: relative; z-index: 2; padding: 16px; width: 100%; }
+.t6-label { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(0.8rem, 2.5vw, 1.4rem); color: #c0392b; }
+.t6-sub { font-size: clamp(0.5rem, 1.5vw, 0.75rem); color: rgba(255,255,255,0.6); margin-top: 4px; }
+.t6-bar { position: absolute; right: 0; top: 0; width: 4px; height: 100%; background: linear-gradient(180deg, var(--red-accent), transparent); }
+
+/* ── METHODE ── */
+.methode { background: var(--bg); }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; max-width: 1000px; margin: 60px auto 0; }
+.step-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px; padding: 40px 32px;
+  position: relative; overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+.step-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 30px var(--bordeaux-glow2);
+  border-color: rgba(192,57,43,0.3);
+}
+.step-num {
+  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-size: 4rem; color: rgba(192,57,43,0.15);
+  line-height: 1; margin-bottom: 24px;
+  position: absolute; top: 20px; right: 24px;
+}
+.step-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: rgba(192,57,43,0.12);
+  border: 1px solid rgba(192,57,43,0.25);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin-bottom: 20px;
+}
+.step-title {
+  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-size: 1.15rem; margin-bottom: 10px;
+}
+.step-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+
+/* ── TARIFS ── */
+.tarifs { background: var(--bg2); }
+.pricing-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 24px; max-width: 1000px; margin: 60px auto 0;
+  align-items: start;
+}
+.price-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px; overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.price-card:hover { transform: translateY(-8px); box-shadow: 0 25px 60px rgba(0,0,0,0.5); }
+.price-card.featured {
+  border-color: rgba(192,57,43,0.5);
+  box-shadow: 0 0 40px rgba(192,57,43,0.15);
+  transform: scale(1.03);
+}
+.price-card.featured:hover { transform: scale(1.03) translateY(-8px); }
+.price-badge {
+  background: var(--red-accent); color: #fff;
+  text-align: center; font-size: 0.78rem; font-weight: 600;
+  padding: 8px; letter-spacing: 0.05em;
+}
+.price-body { padding: 32px; }
+.price-name {
+  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-size: 1.1rem; color: var(--text-muted);
+}
+.price-qty { font-size: 0.85rem; color: var(--text-dim); margin-top: 4px; }
+.price-amount {
+  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-size: 2.8rem; color: #fff;
+  margin: 16px 0 4px; line-height: 1;
+}
+.price-amount span { font-size: 1.2rem; font-weight: 500; color: var(--text-muted); }
+.price-divider { height: 1px; background: var(--card-border); margin: 20px 0; }
+.price-features { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.price-features li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 0.875rem; color: var(--text-muted);
+}
+.price-features li::before { content: '✓'; color: var(--red-accent); flex-shrink: 0; font-weight: 700; margin-top: 1px; }
+.price-features li.dim { color: var(--text-dim); }
+.price-features li.dim::before { color: var(--text-dim); content: '–'; }
+.price-cta { margin-top: 28px; width: 100%; }
+.btn-price {
+  width: 100%; padding: 14px;
+  border-radius: 10px; font-family: 'DM Sans', sans-serif;
+  font-weight: 600; font-size: 0.92rem; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.05); color: var(--text);
+  transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-price:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); }
+.btn-price.featured { background: var(--red-accent); border-color: var(--red-accent); color: #fff; }
+.btn-price.featured:hover { background: #d44; box-shadow: 0 0 30px rgba(192,57,43,0.5); }
+
+/* ── TEMOIGNAGES ── */
+.testimonials { background: var(--bg); }
+.testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1000px; margin: 60px auto 0; }
+.testi-card {
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: 16px; padding: 28px;
+  transition: transform 0.3s, border-color 0.3s;
+}
+.testi-card:hover { transform: translateY(-4px); border-color: rgba(192,57,43,0.25); }
+.testi-stars { display: flex; gap: 4px; margin-bottom: 14px; }
+.testi-stars span { color: var(--red-accent); font-size: 13px; }
+.testi-text { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; font-style: italic; }
+.testi-author { margin-top: 20px; display: flex; align-items: center; gap: 12px; }
+.testi-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-size: 0.85rem; flex-shrink: 0;
+}
+.testi-name { font-weight: 600; font-size: 0.88rem; }
+.testi-channel { font-size: 0.78rem; color: var(--text-dim); }
+
+/* ── FAQ ── */
+.faq { background: var(--bg2); }
+.faq-list { max-width: 700px; margin: 60px auto 0; display: flex; flex-direction: column; gap: 12px; }
+.faq-item {
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: 12px; overflow: hidden;
+}
+.faq-q {
+  padding: 20px 24px; font-weight: 500; font-size: 0.95rem;
+  cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+  user-select: none; transition: color 0.2s;
+}
+.faq-q:hover { color: #ddd; }
+.faq-q .chevron { transition: transform 0.3s; color: var(--text-dim); flex-shrink: 0; }
+.faq-q.open .chevron { transform: rotate(180deg); }
+.faq-a {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.3s;
+  color: var(--text-muted); font-size: 0.9rem; line-height: 1.65;
+}
+.faq-a.open { max-height: 200px; padding: 0 24px 20px; }
+
+/* ── CONTACT / CTA BANNER ── */
+.cta-banner {
+  padding: 80px 5vw; text-align: center;
+  background: linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%);
+  position: relative; overflow: hidden;
+}
+.cta-banner::before {
+  content: '';
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 600px; height: 300px;
+  background: radial-gradient(ellipse, rgba(140,25,25,0.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta-banner h2 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1.15; position: relative; }
+.cta-banner p { color: var(--text-muted); font-size: 1.05rem; margin: 16px auto; max-width: 500px; position: relative; }
+.cta-banner .hero-cta { position: relative; }
+
+/* ── FOOTER ── */
+footer {
+  background: rgba(0,0,0,0.5);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 40px 5vw;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 20px;
+}
+.footer-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--text-muted); }
+.footer-logo span { color: var(--red-accent); }
+.footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+.footer-links a { font-size: 0.82rem; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--text-muted); }
+.footer-right { display: flex; gap: 16px; align-items: center; }
+.footer-right a { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+.footer-right a:hover { color: var(--text); }
+.footer-right svg { width: 16px; height: 16px; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: #120a0a;
+  border: 1px solid rgba(192,57,43,0.3);
+  border-radius: 20px; width: 100%; max-width: 540px;
+  max-height: 90vh; overflow-y: auto;
+  padding: 40px; position: relative;
+  transform: translateY(20px);
+  transition: transform 0.3s;
+  box-shadow: 0 0 60px rgba(140,25,25,0.3);
+}
+.modal-overlay.open .modal { transform: translateY(0); }
+.modal-close {
+  position: absolute; top: 20px; right: 20px;
+  background: rgba(255,255,255,0.06); border: none;
+  width: 36px; height: 36px; border-radius: 50%;
+  color: var(--text-muted); font-size: 18px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, color 0.2s;
+}
+.modal-close:hover { background: rgba(255,255,255,0.12); color: #fff; }
+.modal-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.6rem; margin-bottom: 8px; }
+.modal-sub { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 28px; }
+.modal-pack-badge {
+  display: inline-block; background: rgba(192,57,43,0.15);
+  border: 1px solid rgba(192,57,43,0.3); border-radius: 8px;
+  padding: 6px 14px; font-size: 0.82rem; color: #ff8a8a;
+  margin-bottom: 24px;
+}
+.form-group { margin-bottom: 18px; }
+.form-group label { display: block; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; }
+.form-group input, .form-group textarea, .form-group select {
+  width: 100%; background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px; padding: 13px 16px;
+  color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.92rem;
+  outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+}
+.form-group select option { background: #1a0a0a; }
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+  border-color: rgba(192,57,43,0.5);
+  box-shadow: 0 0 0 3px rgba(192,57,43,0.1);
+}
+.form-group textarea { resize: vertical; min-height: 100px; }
+.btn-submit {
+  width: 100%; padding: 16px;
+  background: var(--red-accent); color: #fff;
+  border: none; border-radius: 12px;
+  font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.95rem;
+  cursor: pointer; margin-top: 8px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.btn-submit:hover { background: #d44; box-shadow: 0 0 30px rgba(192,57,43,0.4); transform: scale(1.01); }
+.btn-submit svg { width: 20px; height: 20px; }
+.modal-note { font-size: 0.78rem; color: var(--text-dim); text-align: center; margin-top: 12px; line-height: 1.5; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  nav { display: none; }
+  nav.mobile-open {
+    display: flex; flex-direction: column;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(10,5,5,0.97); z-index: 99;
+    align-items: center; justify-content: center; gap: 16px;
+  }
+  nav.mobile-open a { font-size: 1.3rem; padding: 14px 28px; }
+  .hamburger { display: flex; z-index: 101; }
+  .btn-instagram span { display: none; }
+  .steps, .pricing-grid, .testi-grid, .thumbnails-grid { grid-template-columns: 1fr; }
+  .pricing-grid { gap: 16px; }
+  .price-card.featured { transform: none; }
+  .price-card.featured:hover { transform: translateY(-8px); }
+  footer { flex-direction: column; text-align: center; }
+  .footer-links, .footer-right { justify-content: center; }
+  .thumbnails-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .thumbnails-grid { grid-template-columns: 1fr; }
+  header { padding: 16px 5vw; }
+  .hero h1 { font-size: 2rem; }
+  .hero-cta { flex-direction: column; align-items: center; }
+  .btn-primary, .btn-outline { width: 100%; justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ANIMATED BG -->
+<div class="bg-canvas">
+  <div class="bg-orb o1"></div>
+  <div class="bg-orb o2"></div>
+  <div class="bg-orb o3"></div>
+</div>
+
+<div class="page">
+
+<!-- ── HEADER ── -->
+<header>
+  <div class="logo">D<span>V</span>ISION</div>
+
+  <nav id="main-nav">
+    <a href="#accueil" onclick="closeNav()">Accueil</a>
+    <a href="#services" onclick="closeNav()">Services</a>
+    <a href="#temoignages" onclick="closeNav()">Témoignages</a>
+    <a href="#faq" onclick="closeNav()">FAQ</a>
+    <a href="#contact" onclick="closeNav()">Contact</a>
+  </nav>
+
+  <div class="header-right">
+    <a href="https://www.instagram.com/dvision_officiel" target="_blank" class="btn-instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+        <circle cx="12" cy="12" r="4"/>
+        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+      </svg>
+      <span>@dvision_officiel</span>
+    </a>
+    <div class="hamburger" id="hamburger" onclick="toggleNav()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</header>
+
+<!-- ── HERO ── -->
+<section class="hero" id="accueil">
+  <div class="hero-badge">✦ Places limitées — Commandez maintenant</div>
+  <h1>DVISION : Des miniatures YouTube<br>qui <em>dominent</em> en Algérie.</h1>
+  <p class="hero-sub">Boostez votre CTR, gagnez des vues et transformez votre audience en clients. Design professionnel livré en 24h.</p>
+  <div class="hero-cta">
+    <a href="#contact" class="btn-primary" onclick="openModal('Starter')">Commander ma miniature en 24h →</a>
+    <a href="#services" class="btn-outline">Voir nos réalisations</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-icon red">👥</span><strong>+500</strong> créateurs accompagnés</div>
+    <div class="stat"><span class="stat-icon red">🖼️</span><strong>+3 000</strong> miniatures créées</div>
+    <div class="stat"><span class="stat-icon red">📈</span><strong>CTR</strong> optimisé garanti</div>
+  </div>
+</section>
+
+<!-- ── SHOWCASE ── -->
+<section class="showcase" id="services">
+  <div class="showcase-header text-center reveal">
+    <div class="section-label">Nos réalisations</div>
+    <h2 class="section-title">Des designs qui font cliquer.</h2>
+    <p class="section-sub">Chaque miniature est conçue pour capturer l'attention dans les 3 premières secondes.</p>
+  </div>
+
+  <div class="thumbnails-grid">
+    <!-- Thumb 1 — Gaming -->
+    <div class="thumb-card reveal delay-1">
+      <div class="thumb-inner t1">
+        <div class="t1-content">
+          <div class="t1-label">SAISON 5<br>FINALE</div>
+          <div class="t1-sub">Gaming • Stratégie</div>
+        </div>
+        <div class="t1-geo"></div>
+      </div>
+    </div>
+    <!-- Thumb 2 — Business -->
+    <div class="thumb-card reveal delay-2">
+      <div class="thumb-inner t2">
+        <div class="t2-glow"></div>
+        <div class="t2-content">
+          <div class="t2-arrow">↗</div>
+          <div class="t2-label">REVENUS<br>×3 EN 6 MOIS</div>
+        </div>
+        <div class="t2-bars">
+          <span style="height:18px"></span>
+          <span style="height:28px"></span>
+          <span style="height:22px"></span>
+          <span style="height:36px"></span>
+          <span style="height:30px"></span>
+        </div>
+      </div>
+    </div>
+    <!-- Thumb 3 — Éducation -->
+    <div class="thumb-card reveal delay-3">
+      <div class="thumb-inner t3">
+        <div class="t3-content">
+          <div class="t3-label">APPRENDRE<br>L'ARABE</div>
+          <div class="t3-tag">● ÉDUCATION</div>
+        </div>
+        <div class="t3-circle"></div>
+      </div>
+    </div>
+    <!-- Thumb 4 — Tech -->
+    <div class="thumb-card reveal delay-1">
+      <div class="thumb-inner t4">
+        <div class="t4-grid"></div>
+        <div class="t4-content">
+          <div class="t4-label">L'IA QUI<br>CHANGE TOUT</div>
+        </div>
+        <div class="t4-hex"></div>
+      </div>
+    </div>
+    <!-- Thumb 5 — Cuisine -->
+    <div class="thumb-card reveal delay-2">
+      <div class="thumb-inner t5">
+        <div class="t5-glow"></div>
+        <div class="t5-content">
+          <div class="t4-label">RECETTE<br>SECRÈTE</div>
+        </div>
+        <div class="t5-lines">
+          <span style="width:40px"></span>
+          <span style="width:28px"></span>
+          <span style="width:50px"></span>
+          <span style="width:32px"></span>
+        </div>
+      </div>
+    </div>
+    <!-- Thumb 6 — Actualité -->
+    <div class="thumb-card reveal delay-3">
+      <div class="thumb-inner t6">
+        <div class="t6-content">
+          <div class="t6-label">BREAKING<br>NEWS</div>
+          <div class="t6-sub">Actualité • Algérie</div>
+        </div>
+        <div class="t6-bar"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MÉTHODE ── -->
+<section class="methode" id="methode">
+  <div class="text-center reveal">
+    <div class="section-label">Notre méthode</div>
+    <h2 class="section-title">Simple. Rapide. Efficace.</h2>
+    <p class="section-sub">Trois étapes pour une miniature qui génère des vues dès sa mise en ligne.</p>
+  </div>
+  <div class="steps">
+    <div class="step-card reveal delay-1">
+      <div class="step-num">01</div>
+      <div class="step-icon">📋</div>
+      <div class="step-title">Votre demande</div>
+      <div class="step-desc">Remplissez notre formulaire de commande avec les détails de votre vidéo. Plus c'est précis, meilleur sera le résultat.</div>
+    </div>
+    <div class="step-card reveal delay-2">
+      <div class="step-num">02</div>
+      <div class="step-icon">🎨</div>
+      <div class="step-title">Création du design</div>
+      <div class="step-desc">Notre designer crée votre miniature optimisée pour le CTR. Typographie percutante, couleurs impactantes, composition parfaite.</div>
+    </div>
+    <div class="step-card reveal delay-3">
+      <div class="step-num">03</div>
+      <div class="step-icon">📦</div>
+      <div class="step-title">Livraison en 24h</div>
+      <div class="step-desc">Recevez votre miniature HD (1280×720px) directement via WhatsApp. Révisions incluses jusqu'à votre satisfaction.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TARIFS ── -->
+<section class="tarifs" id="tarifs">
+  <div class="text-center reveal">
+    <div class="section-label">Tarifs & Offres</div>
+    <h2 class="section-title">Une offre pour chaque étape<br>de votre croissance.</h2>
+    <p class="section-sub">Paiement à la livraison. Aucun risque.</p>
+  </div>
+  <div class="pricing-grid">
+    <!-- Starter -->
+    <div class="price-card reveal delay-1">
+      <div class="price-body">
+        <div class="price-name">Starter</div>
+        <div class="price-qty">1 miniature</div>
+        <div class="price-amount">2 500 <span>Da</span></div>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li>Miniature HD 1280×720px</li>
+          <li>Livraison en 48 heures</li>
+          <li>2 révisions gratuites</li>
+          <li>Optimisation CTR de base</li>
+          <li class="dim">Révisions illimitées</li>
+          <li class="dim">Support WhatsApp prioritaire</li>
+        </ul>
+        <div class="price-cta">
+          <button class="btn-price" onclick="openModal('Pack Starter — 2 500 Da')">Commencer →</button>
+        </div>
+      </div>
+    </div>
+    <!-- Pro (featured) -->
+    <div class="price-card featured reveal delay-2">
+      <div class="price-badge">⚡ Offre la plus populaire</div>
+      <div class="price-body">
+        <div class="price-name">Pack Pro</div>
+        <div class="price-qty">5 miniatures</div>
+        <div class="price-amount">9 900 <span>Da</span></div>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li>5 miniatures HD captivantes</li>
+          <li>Optimisation CTR + titres</li>
+          <li>Livraison sous 48h par miniature</li>
+          <li>Révisions illimitées</li>
+          <li>Support WhatsApp 7j/7</li>
+          <li>Économisez 2 600 Da</li>
+        </ul>
+        <div class="price-cta">
+          <button class="btn-price featured" onclick="openModal('Pack Pro — 9 900 Da')">Commander maintenant →</button>
+        </div>
+      </div>
+    </div>
+    <!-- Elite -->
+    <div class="price-card reveal delay-3">
+      <div class="price-body">
+        <div class="price-name">Elite</div>
+        <div class="price-qty">10 miniatures</div>
+        <div class="price-amount">16 000 <span>Da</span></div>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li>10 miniatures HD premium</li>
+          <li>Optimisation CTR avancée</li>
+          <li>Révisions illimitées</li>
+          <li>Support prioritaire dédié</li>
+          <li>Coaching miniature inclus</li>
+          <li>Économisez 9 000 Da</li>
+        </ul>
+        <div class="price-cta">
+          <button class="btn-price" onclick="openModal('Pack Elite — 16 000 Da')">Commencer →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TÉMOIGNAGES ── -->
+<section class="testimonials" id="temoignages">
+  <div class="text-center reveal">
+    <div class="section-label">Avis clients</div>
+    <h2 class="section-title">Ils nous font confiance.</h2>
+    <p class="section-sub">Des créateurs algériens qui ont boosté leur CTR avec DVISION.</p>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card reveal delay-1">
+      <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      <div class="testi-text">"Depuis que j'utilise DVISION, mon CTR est passé de 3% à 8%. Les miniatures sont vraiment professionnelles et l'équipe est très réactive."</div>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(192,57,43,0.2);color:#ff8a8a;">YS</div>
+        <div>
+          <div class="testi-name">Yacine Saadi</div>
+          <div class="testi-channel">TechDZ • 45k abonnés</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal delay-2">
+      <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      <div class="testi-text">"Livraison rapide, design parfait. Ma vidéo sur les startups algériennes a explosé grâce à la miniature DVISION. Je recommande à 200%."</div>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(30,80,200,0.2);color:#6a9fff;">AB</div>
+        <div>
+          <div class="testi-name">Amine Benali</div>
+          <div class="testi-channel">Business Algérie • 82k abonnés</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal delay-3">
+      <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      <div class="testi-text">"Enfin un service de miniatures adapté au marché algérien. Paiement à la livraison, c'est rassurant. Qualité au rendez-vous à chaque fois."</div>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(0,160,80,0.2);color:#4aff9a;">SM</div>
+        <div>
+          <div class="testi-name">Sara Mekki</div>
+          <div class="testi-channel">Cuisine DZ • 31k abonnés</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal delay-1">
+      <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      <div class="testi-text">"Le formulaire de commande est simple et l'équipe comprend exactement ce qu'on veut. Résultat toujours au-delà de mes attentes."</div>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(180,100,0,0.2);color:#ffaa30;">KM</div>
+        <div>
+          <div class="testi-name">Karim Mansouri</div>
+          <div class="testi-channel">Vlogs Alger • 18k abonnés</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal delay-2">
+      <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      <div class="testi-text">"J'ai commandé le pack Pro et franchement, les 5 miniatures sont toutes différentes et toutes excellentes. Mon canal a grandi de 40% ce mois."</div>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(100,0,200,0.2);color:#c080ff;">RB</div>
+        <div>
+          <div class="testi-name">Riadh Bouzid</div>
+          <div class="testi-channel">Gaming DZ • 67k abonnés</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal delay-3">
+      <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      <div class="testi-text">"Service professionnel, communication parfaite. La miniature pour ma vidéo actualité était prête en moins de 20h. Incroyable."</div>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(192,57,43,0.15);color:#ff7070;">NA</div>
+        <div>
+          <div class="testi-name">Nadir Aït</div>
+          <div class="testi-channel">Actu Maghreb • 24k abonnés</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section class="faq" id="faq">
+  <div class="text-center reveal">
+    <div class="section-label">FAQ</div>
+    <h2 class="section-title">Questions fréquentes.</h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item reveal">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Comment se passe la commande ?</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="faq-a">Cliquez sur un bouton de commande, remplissez le formulaire avec les détails de votre vidéo, puis nous vous recontactons sur WhatsApp pour finaliser. Paiement uniquement à la livraison.</div>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Quel est le délai de livraison ?</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="faq-a">La livraison standard est de 24 à 48 heures après réception de tous les détails. Pour les commandes urgentes, contactez-nous directement sur WhatsApp.</div>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Comment s'effectue le paiement ?</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="faq-a">Nous acceptons les paiements par CCP, Baridimob, ou BaridiPay. Toujours paiement à la livraison — vous payez après avoir reçu et validé votre miniature.</div>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Combien de révisions sont incluses ?</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="faq-a">Le Pack Starter inclut 2 révisions. Les packs Pro et Elite bénéficient de révisions illimitées jusqu'à votre entière satisfaction.</div>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Dans quel format est livrée la miniature ?</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="faq-a">Vous recevez votre miniature en HD (1280×720px) au format JPG/PNG, prête à être uploadée directement sur YouTube. Le fichier source (PSD) est disponible sur demande.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA BANNER ── -->
+<section class="cta-banner" id="contact">
+  <div class="reveal">
+    <div class="section-label" style="justify-content:center;">Prêt à dominer ?</div>
+    <h2>Votre prochaine vidéo mérite<br>une miniature qui claque.</h2>
+    <p>Rejoignez les créateurs algériens qui font confiance à DVISION pour leur image YouTube.</p>
+    <div class="hero-cta">
+      <a href="#" class="btn-primary" onclick="openModal('Pack Pro — 9 900 Da'); return false;">Commander ma miniature →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo">D<span>V</span>ISION</div>
+  <div class="footer-links">
+    <a href="#">Conditions Générales de Vente</a>
+    <a href="#">Conditions Générales d'Utilisation</a>
+    <a href="#">Politique de confidentialité</a>
+  </div>
+  <div class="footer-right">
+    <a href="https://www.instagram.com/dvision_officiel" target="_blank">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+        <circle cx="12" cy="12" r="4"/>
+        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+      </svg>
+      @dvision_officiel
+    </a>
+  </div>
+</footer>
+
+</div><!-- end page -->
+
+<!-- ── MODAL ── -->
+<div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title">Commander une miniature</div>
+    <div class="modal-sub">Remplissez le formulaire — nous vous contacterons sur WhatsApp dans les 24h.</div>
+    <div class="modal-pack-badge" id="modal-pack-label">Pack Starter</div>
+
+    <div class="form-group">
+      <label>Nom de la chaîne YouTube *</label>
+      <input type="text" id="f-channel" placeholder="Ex : TechDZ Officiel">
+    </div>
+    <div class="form-group">
+      <label>Titre de la vidéo *</label>
+      <input type="text" id="f-title" placeholder="Ex : Comment gagner de l'argent en Algérie en 2025">
+    </div>
+    <div class="form-group">
+      <label>Type de miniature / Domaine *</label>
+      <select id="f-type">
+        <option value="">— Sélectionnez une catégorie —</option>
+        <option>Gaming</option>
+        <option>Vlogs</option>
+        <option>Éducation</option>
+        <option>Business</option>
+        <option>Actualité</option>
+        <option>Cuisine</option>
+        <option>High-Tech</option>
+        <option>Autre</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Détails & Description de la miniature souhaitée *</label>
+      <textarea id="f-desc" placeholder="Décrivez ce que vous souhaitez : couleurs, style, texte à afficher, ambiance générale..."></textarea>
+    </div>
+
+    <button class="btn-submit" onclick="submitOrder()">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.938 0C5.373 0 0 5.373 0 11.938c0 2.105.552 4.076 1.518 5.786L0 24l6.435-1.687a11.9 11.9 0 005.503 1.355C18.5 23.668 24 18.295 24 11.73 24 5.166 18.5.002 11.938.002zm0 21.785a9.845 9.845 0 01-5.019-1.37l-.36-.214-3.736.979 1.001-3.648-.235-.374a9.84 9.84 0 01-1.506-5.264c0-5.44 4.428-9.868 9.877-9.868 5.449 0 9.877 4.428 9.877 9.868 0 5.44-4.428 9.891-9.9 9.891z"/></svg>
+      Envoyer ma demande sur WhatsApp
+    </button>
+    <div class="modal-note">En soumettant ce formulaire, vous serez redirigé vers WhatsApp pour finaliser votre commande. Paiement CCP ou Baridimob à la livraison.</div>
+  </div>
+</div>
+
+<script>
+// ── NAV MOBILE ──
+function toggleNav() {
+  const nav = document.getElementById('main-nav');
+  nav.classList.toggle('mobile-open');
+}
+function closeNav() {
+  document.getElementById('main-nav').classList.remove('mobile-open');
+}
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── FAQ ──
+function toggleFaq(el) {
+  const answer = el.nextElementSibling;
+  const isOpen = answer.classList.contains('open');
+  document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
+  document.querySelectorAll('.faq-q').forEach(q => q.classList.remove('open'));
+  if (!isOpen) { answer.classList.add('open'); el.classList.add('open'); }
+}
+
+// ── MODAL ──
+let currentPack = 'Pack Starter';
+function openModal(pack) {
+  currentPack = pack || 'Pack Starter';
+  document.getElementById('modal-pack-label').textContent = currentPack;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  return false;
+}
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+// ── SUBMIT TO WHATSAPP ──
+function submitOrder() {
+  const channel = document.getElementById('f-channel').value.trim();
+  const title = document.getElementById('f-title').value.trim();
+  const type = document.getElementById('f-type').value;
+  const desc = document.getElementById('f-desc').value.trim();
+
+  if (!channel) { alert('Veuillez entrer le nom de votre chaîne YouTube.'); return; }
+  if (!title) { alert('Veuillez entrer le titre de votre vidéo.'); return; }
+  if (!type) { alert('Veuillez sélectionner le type de miniature.'); return; }
+  if (!desc) { alert('Veuillez décrire la miniature souhaitée.'); return; }
+
+  const msg = `✦ Commande DVISION ✦\n\n📦 Pack : ${currentPack}\n\n📺 Chaîne : ${channel}\n🎬 Titre : ${title}\n🎯 Type : ${type}\n\n📝 Description :\n${desc}\n\n—\nEnvoyé via dvision-miniatures.dz`;
+  const encoded = encodeURIComponent(msg);
+  window.open(`https://wa.me/213551027541?text=${encoded}`, '_blank');
+  closeModal();
+}
+
+// ── 3D TILT ON THUMB CARDS ──
+document.querySelectorAll('.thumb-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    card.style.transform = `scale(1.04) rotateY(${x * 12}deg) rotateX(${-y * 8}deg)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
+
+// ── ESCAPE KEY ──
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>

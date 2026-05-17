@@ -229,26 +229,83 @@ section { padding: 100px 5vw; position: relative; }
 .showcase { background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 50%, var(--bg) 100%); }
 .showcase-header { max-width: 700px; margin: 0 auto 60px; }
 
-.thumbnails-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  max-width: 1100px; margin: 0 auto;
-  perspective: 1200px;
+.showcase {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+.showcase-header {
+  position: relative;
+  z-index: 20;
+}
+.marquee-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 40px 0;
+  transform: rotate(-6deg) scale(1.1);
+  width: calc(100% + 10vw);
+  margin-left: -5vw;
+  margin-right: -5vw;
+  position: relative;
+  z-index: 10;
+}
+.marquee-wrapper::before,
+.marquee-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 15vw;
+  z-index: 15;
+  pointer-events: none;
+}
+.marquee-wrapper::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg) 0%, rgba(10,5,5,0) 100%);
+}
+.marquee-wrapper::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg) 0%, rgba(10,5,5,0) 100%);
 }
 
+.marquee-track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+}
+
+@keyframes scrollLeft {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes scrollRight {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+.marquee-left { animation: scrollLeft 45s linear infinite; }
+.marquee-right { animation: scrollRight 45s linear infinite; }
+.marquee-track:hover { animation-play-state: paused; }
+
 .thumb-card {
+  width: clamp(280px, 22vw, 400px);
+  aspect-ratio: 16/9;
   border-radius: 12px; overflow: hidden;
-  position: relative; aspect-ratio: 16/9;
+  position: relative;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  transform-style: preserve-3d;
+  transition: transform 0.4s ease, filter 0.4s ease, box-shadow 0.4s ease;
   cursor: pointer;
+  flex-shrink: 0;
+  filter: brightness(0.65) grayscale(15%);
 }
 .thumb-card:hover {
-  transform: scale(1.04) rotateY(-4deg) rotateX(2deg);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px var(--bordeaux-glow);
+  transform: scale(1.05);
+  filter: brightness(1.1) grayscale(0%);
+  z-index: 20;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px var(--bordeaux-glow);
 }
 
 /* Abstract thumbnail designs — no people */
@@ -644,78 +701,56 @@ footer {
     <p class="section-sub">Chaque miniature est conçue pour capturer l'attention dans les 3 premières secondes.</p>
   </div>
 
-  <div class="thumbnails-grid">
-    <!-- Thumb 1 — Gaming -->
-    <div class="thumb-card reveal delay-1">
-      <div class="thumb-inner t1">
-        <div class="t1-content">
-          <div class="t1-label">SAISON 5<br>FINALE</div>
-          <div class="t1-sub">Gaming • Stratégie</div>
-        </div>
-        <div class="t1-geo"></div>
-      </div>
+  <div class="marquee-wrapper">
+    <div class="marquee-track marquee-left">
+      <!-- SET 1 -->
+      <div class="thumb-card"><div class="thumb-inner t1"><div class="t1-content"><div class="t1-label">SAISON 5<br>FINALE</div><div class="t1-sub">Gaming • Stratégie</div></div><div class="t1-geo"></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t2"><div class="t2-glow"></div><div class="t2-content"><div class="t2-arrow">↗</div><div class="t2-label">REVENUS<br>×3 EN 6 MOIS</div></div><div class="t2-bars"><span style="height:18px"></span><span style="height:28px"></span><span style="height:22px"></span><span style="height:36px"></span><span style="height:30px"></span></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t3"><div class="t3-content"><div class="t3-label">APPRENDRE<br>L'ARABE</div><div class="t3-tag">● ÉDUCATION</div></div><div class="t3-circle"></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t4"><div class="t4-grid"></div><div class="t4-content"><div class="t4-label">L'IA QUI<br>CHANGE TOUT</div></div><div class="t4-hex"></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t5"><div class="t5-glow"></div><div class="t5-content"><div class="t4-label">RECETTE<br>SECRÈTE</div></div><div class="t5-lines"><span style="width:40px"></span><span style="width:28px"></span><span style="width:50px"></span><span style="width:32px"></span></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t6"><div class="t6-content"><div class="t6-label">BREAKING<br>NEWS</div><div class="t6-sub">Actualité • Algérie</div></div><div class="t6-bar"></div></div></div>
+      <!-- SET 1 DUPLICATE -->
+      <div class="thumb-card"><div class="thumb-inner t1"><div class="t1-content"><div class="t1-label">SAISON 5<br>FINALE</div><div class="t1-sub">Gaming • Stratégie</div></div><div class="t1-geo"></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t2"><div class="t2-glow"></div><div class="t2-content"><div class="t2-arrow">↗</div><div class="t2-label">REVENUS<br>×3 EN 6 MOIS</div></div><div class="t2-bars"><span style="height:18px"></span><span style="height:28px"></span><span style="height:22px"></span><span style="height:36px"></span><span style="height:30px"></span></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t3"><div class="t3-content"><div class="t3-label">APPRENDRE<br>L'ARABE</div><div class="t3-tag">● ÉDUCATION</div></div><div class="t3-circle"></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t4"><div class="t4-grid"></div><div class="t4-content"><div class="t4-label">L'IA QUI<br>CHANGE TOUT</div></div><div class="t4-hex"></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t5"><div class="t5-glow"></div><div class="t5-content"><div class="t4-label">RECETTE<br>SECRÈTE</div></div><div class="t5-lines"><span style="width:40px"></span><span style="width:28px"></span><span style="width:50px"></span><span style="width:32px"></span></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t6"><div class="t6-content"><div class="t6-label">BREAKING<br>NEWS</div><div class="t6-sub">Actualité • Algérie</div></div><div class="t6-bar"></div></div></div>
     </div>
-    <!-- Thumb 2 — Business -->
-    <div class="thumb-card reveal delay-2">
-      <div class="thumb-inner t2">
-        <div class="t2-glow"></div>
-        <div class="t2-content">
-          <div class="t2-arrow">↗</div>
-          <div class="t2-label">REVENUS<br>×3 EN 6 MOIS</div>
-        </div>
-        <div class="t2-bars">
-          <span style="height:18px"></span>
-          <span style="height:28px"></span>
-          <span style="height:22px"></span>
-          <span style="height:36px"></span>
-          <span style="height:30px"></span>
-        </div>
-      </div>
+    
+    <div class="marquee-track marquee-right">
+      <!-- SET 2 (reversed) -->
+      <div class="thumb-card"><div class="thumb-inner t6"><div class="t6-content"><div class="t6-label">BREAKING<br>NEWS</div><div class="t6-sub">Actualité • Algérie</div></div><div class="t6-bar"></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t5"><div class="t5-glow"></div><div class="t5-content"><div class="t4-label">RECETTE<br>SECRÈTE</div></div><div class="t5-lines"><span style="width:40px"></span><span style="width:28px"></span><span style="width:50px"></span><span style="width:32px"></span></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t4"><div class="t4-grid"></div><div class="t4-content"><div class="t4-label">L'IA QUI<br>CHANGE TOUT</div></div><div class="t4-hex"></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t3"><div class="t3-content"><div class="t3-label">APPRENDRE<br>L'ARABE</div><div class="t3-tag">● ÉDUCATION</div></div><div class="t3-circle"></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t2"><div class="t2-glow"></div><div class="t2-content"><div class="t2-arrow">↗</div><div class="t2-label">REVENUS<br>×3 EN 6 MOIS</div></div><div class="t2-bars"><span style="height:18px"></span><span style="height:28px"></span><span style="height:22px"></span><span style="height:36px"></span><span style="height:30px"></span></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t1"><div class="t1-content"><div class="t1-label">SAISON 5<br>FINALE</div><div class="t1-sub">Gaming • Stratégie</div></div><div class="t1-geo"></div></div></div>
+      <!-- SET 2 DUPLICATE -->
+      <div class="thumb-card"><div class="thumb-inner t6"><div class="t6-content"><div class="t6-label">BREAKING<br>NEWS</div><div class="t6-sub">Actualité • Algérie</div></div><div class="t6-bar"></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t5"><div class="t5-glow"></div><div class="t5-content"><div class="t4-label">RECETTE<br>SECRÈTE</div></div><div class="t5-lines"><span style="width:40px"></span><span style="width:28px"></span><span style="width:50px"></span><span style="width:32px"></span></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t4"><div class="t4-grid"></div><div class="t4-content"><div class="t4-label">L'IA QUI<br>CHANGE TOUT</div></div><div class="t4-hex"></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t3"><div class="t3-content"><div class="t3-label">APPRENDRE<br>L'ARABE</div><div class="t3-tag">● ÉDUCATION</div></div><div class="t3-circle"></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t2"><div class="t2-glow"></div><div class="t2-content"><div class="t2-arrow">↗</div><div class="t2-label">REVENUS<br>×3 EN 6 MOIS</div></div><div class="t2-bars"><span style="height:18px"></span><span style="height:28px"></span><span style="height:22px"></span><span style="height:36px"></span><span style="height:30px"></span></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t1"><div class="t1-content"><div class="t1-label">SAISON 5<br>FINALE</div><div class="t1-sub">Gaming • Stratégie</div></div><div class="t1-geo"></div></div></div>
     </div>
-    <!-- Thumb 3 — Éducation -->
-    <div class="thumb-card reveal delay-3">
-      <div class="thumb-inner t3">
-        <div class="t3-content">
-          <div class="t3-label">APPRENDRE<br>L'ARABE</div>
-          <div class="t3-tag">● ÉDUCATION</div>
-        </div>
-        <div class="t3-circle"></div>
-      </div>
-    </div>
-    <!-- Thumb 4 — Tech -->
-    <div class="thumb-card reveal delay-1">
-      <div class="thumb-inner t4">
-        <div class="t4-grid"></div>
-        <div class="t4-content">
-          <div class="t4-label">L'IA QUI<br>CHANGE TOUT</div>
-        </div>
-        <div class="t4-hex"></div>
-      </div>
-    </div>
-    <!-- Thumb 5 — Cuisine -->
-    <div class="thumb-card reveal delay-2">
-      <div class="thumb-inner t5">
-        <div class="t5-glow"></div>
-        <div class="t5-content">
-          <div class="t4-label">RECETTE<br>SECRÈTE</div>
-        </div>
-        <div class="t5-lines">
-          <span style="width:40px"></span>
-          <span style="width:28px"></span>
-          <span style="width:50px"></span>
-          <span style="width:32px"></span>
-        </div>
-      </div>
-    </div>
-    <!-- Thumb 6 — Actualité -->
-    <div class="thumb-card reveal delay-3">
-      <div class="thumb-inner t6">
-        <div class="t6-content">
-          <div class="t6-label">BREAKING<br>NEWS</div>
-          <div class="t6-sub">Actualité • Algérie</div>
-        </div>
-        <div class="t6-bar"></div>
-      </div>
+    
+    <div class="marquee-track marquee-left" style="animation-duration: 55s;">
+      <!-- SET 3 (mixed) -->
+      <div class="thumb-card"><div class="thumb-inner t4"><div class="t4-grid"></div><div class="t4-content"><div class="t4-label">L'IA QUI<br>CHANGE TOUT</div></div><div class="t4-hex"></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t5"><div class="t5-glow"></div><div class="t5-content"><div class="t4-label">RECETTE<br>SECRÈTE</div></div><div class="t5-lines"><span style="width:40px"></span><span style="width:28px"></span><span style="width:50px"></span><span style="width:32px"></span></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t6"><div class="t6-content"><div class="t6-label">BREAKING<br>NEWS</div><div class="t6-sub">Actualité • Algérie</div></div><div class="t6-bar"></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t1"><div class="t1-content"><div class="t1-label">SAISON 5<br>FINALE</div><div class="t1-sub">Gaming • Stratégie</div></div><div class="t1-geo"></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t2"><div class="t2-glow"></div><div class="t2-content"><div class="t2-arrow">↗</div><div class="t2-label">REVENUS<br>×3 EN 6 MOIS</div></div><div class="t2-bars"><span style="height:18px"></span><span style="height:28px"></span><span style="height:22px"></span><span style="height:36px"></span><span style="height:30px"></span></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t3"><div class="t3-content"><div class="t3-label">APPRENDRE<br>L'ARABE</div><div class="t3-tag">● ÉDUCATION</div></div><div class="t3-circle"></div></div></div>
+      <!-- SET 3 DUPLICATE -->
+      <div class="thumb-card"><div class="thumb-inner t4"><div class="t4-grid"></div><div class="t4-content"><div class="t4-label">L'IA QUI<br>CHANGE TOUT</div></div><div class="t4-hex"></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t5"><div class="t5-glow"></div><div class="t5-content"><div class="t4-label">RECETTE<br>SECRÈTE</div></div><div class="t5-lines"><span style="width:40px"></span><span style="width:28px"></span><span style="width:50px"></span><span style="width:32px"></span></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t6"><div class="t6-content"><div class="t6-label">BREAKING<br>NEWS</div><div class="t6-sub">Actualité • Algérie</div></div><div class="t6-bar"></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t1"><div class="t1-content"><div class="t1-label">SAISON 5<br>FINALE</div><div class="t1-sub">Gaming • Stratégie</div></div><div class="t1-geo"></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t2"><div class="t2-glow"></div><div class="t2-content"><div class="t2-arrow">↗</div><div class="t2-label">REVENUS<br>×3 EN 6 MOIS</div></div><div class="t2-bars"><span style="height:18px"></span><span style="height:28px"></span><span style="height:22px"></span><span style="height:36px"></span><span style="height:30px"></span></div></div></div>
+      <div class="thumb-card"><div class="thumb-inner t3"><div class="t3-content"><div class="t3-label">APPRENDRE<br>L'ARABE</div><div class="t3-tag">● ÉDUCATION</div></div><div class="t3-circle"></div></div></div>
     </div>
   </div>
 </section>

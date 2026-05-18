@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DVISION — Miniatures YouTube qui dominent</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #0a0505;
@@ -24,6 +24,24 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+button:focus { outline: none; }
+button:focus-visible { outline: 2px solid rgba(192,57,43,0.6); outline-offset: 2px; }
+
+/* Prevent text selection cursor on non-interactive content */
+h1, h2, h3, h4, h5, h6,
+p, span, div, section, header, footer,
+li, label, .section-label, .section-title,
+.section-sub, .hero-badge, .hero-sub,
+.stat, .step-title, .step-desc,
+.price-name, .price-qty, .price-amount,
+.price-features li, .testi-text, .testi-name,
+.testi-channel, .faq-q span, .faq-a,
+.modal-title, .modal-sub, .modal-note,
+.footer-logo, .footer-links a {
+  user-select: none;
+  -webkit-user-select: none;
+}
 
 html { scroll-behavior: smooth; }
 
@@ -731,7 +749,138 @@ footer {
 .btn-submit svg { width: 20px; height: 20px; }
 .modal-note { font-size: 0.78rem; color: var(--text-dim); text-align: center; margin-top: 12px; line-height: 1.5; }
 
-/* ── ANIMATIONS ── */
+/* ── LANG TOGGLE ── */
+.btn-lang {
+  position: relative;
+  display: flex; align-items: center;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 100px;
+  padding: 3px;
+  cursor: pointer;
+  gap: 0;
+  flex-shrink: 0;
+  transition: border-color 0.2s;
+  overflow: hidden;
+}
+.btn-lang:hover { border-color: rgba(255,255,255,0.22); }
+.btn-lang:focus { outline: none; }
+.btn-lang:focus-visible { outline: 2px solid rgba(192,57,43,0.6); outline-offset: 2px; }
+
+.lang-opt {
+  position: relative; z-index: 2;
+  padding: 5px 13px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700; font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.38);
+  border-radius: 100px;
+  transition: color 0.3s;
+  user-select: none;
+  line-height: 1;
+}
+.lang-opt.active { color: #fff; }
+
+.lang-slider {
+  position: absolute; z-index: 1;
+  top: 3px; bottom: 3px;
+  border-radius: 100px;
+  background: var(--red-accent);
+  box-shadow: 0 0 14px rgba(192,57,43,0.55);
+  transition: left 0.32s cubic-bezier(0.77,0,0.175,1), width 0.32s cubic-bezier(0.77,0,0.175,1);
+  /* positioned by JS */
+}
+
+/* ── ARABIC MODE ── */
+html[lang="ar"] body {
+  font-family: 'Cairo', sans-serif;
+  direction: rtl;
+}
+html[lang="ar"] .hero h1,
+html[lang="ar"] .section-title,
+html[lang="ar"] .cta-banner h2,
+html[lang="ar"] .step-title,
+html[lang="ar"] .price-name,
+html[lang="ar"] .drawer-nav a,
+html[lang="ar"] .modal-title,
+html[lang="ar"] .footer-logo {
+  font-family: 'Cairo', sans-serif;
+  letter-spacing: 0;
+}
+html[lang="ar"] .section-label {
+  letter-spacing: 0;
+  font-family: 'Cairo', sans-serif;
+}
+html[lang="ar"] .section-label::before {
+  display: none;
+}
+html[lang="ar"] nav { flex-direction: row-reverse; }
+html[lang="ar"] header { flex-direction: row-reverse; }
+html[lang="ar"] .header-right { flex-direction: row-reverse; }
+html[lang="ar"] .hero-cta { flex-direction: row-reverse; }
+html[lang="ar"] .hero-stats { flex-direction: row-reverse; }
+html[lang="ar"] .stat { flex-direction: row-reverse; text-align: right; }
+html[lang="ar"] .step-num { right: auto; left: 24px; }
+html[lang="ar"] .step-icon { margin-right: 0; }
+html[lang="ar"] .price-features li { flex-direction: row-reverse; text-align: right; }
+html[lang="ar"] .testi-author { flex-direction: row-reverse; text-align: right; }
+html[lang="ar"] .faq-q { flex-direction: row-reverse; }
+html[lang="ar"] .drawer { right: auto; left: 0; transform: translateX(-100%); border-left: none; border-right: 1px solid rgba(255,255,255,0.06); }
+html[lang="ar"] .drawer.open { transform: translateX(0); }
+html[lang="ar"] .drawer-nav a { flex-direction: row-reverse; }
+html[lang="ar"] .drawer-nav a::before { left: auto; right: 0; }
+html[lang="ar"] .drawer-nav a:hover { padding-left: 0; padding-right: 12px; }
+html[lang="ar"] .drawer-close { right: auto; left: 28px; }
+html[lang="ar"] .drawer-footer { flex-direction: row-reverse; }
+html[lang="ar"] .drawer-footer::before { order: -1; }
+html[lang="ar"] footer { flex-direction: row-reverse; }
+html[lang="ar"] .footer-links { flex-direction: row-reverse; }
+html[lang="ar"] .modal-title,
+html[lang="ar"] .modal-sub,
+html[lang="ar"] .modal-note { text-align: right; }
+html[lang="ar"] .form-group label { text-align: right; letter-spacing: 0; }
+html[lang="ar"] .form-group input,
+html[lang="ar"] .form-group textarea,
+html[lang="ar"] .form-group select { text-align: right; direction: rtl; }
+html[lang="ar"] .price-qty,
+html[lang="ar"] .price-amount { text-align: right; }
+/* Numbers stay LTR inside arabic text */
+html[lang="ar"] .price-amount,
+html[lang="ar"] .stat strong { unicode-bidi: plaintext; direction: ltr; display: inline-block; }
+html[lang="ar"] .stat { direction: rtl; }
+html[lang="ar"] .price-qty { direction: ltr; display: inline-block; }
+html[lang="ar"] .hero-badge { direction: rtl; font-family: 'Cairo', sans-serif; }
+html[lang="ar"] .hero-badge::before { display: none; }
+
+/* Keep btn-price layout stable */
+html[lang="ar"] .btn-price { direction: rtl; font-family: 'Cairo', sans-serif; }
+html[lang="ar"] .btn-primary,
+html[lang="ar"] .btn-outline { font-family: 'Cairo', sans-serif; direction: rtl; }
+html[lang="ar"] .btn-submit { direction: rtl; font-family: 'Cairo', sans-serif; }
+
+/* Drawer animation RTL */
+@keyframes drawerLinkInRTL {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+html[lang="ar"] .drawer.open .drawer-nav li:nth-child(1) a { animation: drawerLinkInRTL 0.4s ease 0.2s both; }
+html[lang="ar"] .drawer.open .drawer-nav li:nth-child(2) a { animation: drawerLinkInRTL 0.4s ease 0.27s both; }
+html[lang="ar"] .drawer.open .drawer-nav li:nth-child(3) a { animation: drawerLinkInRTL 0.4s ease 0.34s both; }
+html[lang="ar"] .drawer.open .drawer-nav li:nth-child(4) a { animation: drawerLinkInRTL 0.4s ease 0.41s both; }
+html[lang="ar"] .drawer.open .drawer-nav li:nth-child(5) a { animation: drawerLinkInRTL 0.4s ease 0.48s both; }
+
+/* Fix marquee: always LTR regardless of page direction */
+.marquee-wrapper,
+.marquee-track,
+.thumb-card {
+  direction: ltr !important;
+}
+
+/* Disable drawer transition during lang switch to prevent flash */
+.drawer.no-transition {
+  transition: none !important;
+}
+
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: translateY(0); }
@@ -777,11 +926,11 @@ footer {
   <div class="logo">D<span>V</span>ISION</div>
 
   <nav id="main-nav">
-    <a href="#accueil" onclick="closeNav()">Accueil</a>
-    <a href="#services" onclick="closeNav()">Services</a>
-    <a href="#temoignages" onclick="closeNav()">Témoignages</a>
-    <a href="#faq" onclick="closeNav()">FAQ</a>
-    <a href="#contact" onclick="closeNav()">Contact</a>
+    <a href="#accueil" onclick="closeNav()" data-fr="Accueil" data-ar="الرئيسية">Accueil</a>
+    <a href="#services" onclick="closeNav()" data-fr="Services" data-ar="أعمالنا">Services</a>
+    <a href="#temoignages" onclick="closeNav()" data-fr="Témoignages" data-ar="آراء العملاء">Témoignages</a>
+    <a href="#faq" onclick="closeNav()" data-fr="FAQ" data-ar="أسئلة شائعة">FAQ</a>
+    <a href="#contact" onclick="closeNav()" data-fr="Contact" data-ar="تواصل">Contact</a>
   </nav>
 
   <div class="header-right">
@@ -793,6 +942,11 @@ footer {
       </svg>
       <span>@dvision_officiel</span>
     </a>
+    <button class="btn-lang" id="lang-toggle-btn" onclick="toggleLang()" aria-label="Changer la langue">
+      <span class="lang-opt" id="lang-opt-fr">FR</span>
+      <span class="lang-opt" id="lang-opt-ar">AR</span>
+      <span class="lang-slider" id="lang-slider"></span>
+    </button>
     <button class="hamburger" id="hamburger-btn" onclick="openDrawer()" aria-label="Ouvrir le menu">
       <span></span>
       <span></span>
@@ -811,11 +965,11 @@ footer {
     </svg>
   </button>
   <ul class="drawer-nav">
-    <li><a href="#accueil" onclick="closeDrawer()"><span class="nav-dot"></span>Accueil</a></li>
-    <li><a href="#services" onclick="closeDrawer()"><span class="nav-dot"></span>Services</a></li>
-    <li><a href="#temoignages" onclick="closeDrawer()"><span class="nav-dot"></span>Témoignages</a></li>
-    <li><a href="#faq" onclick="closeDrawer()"><span class="nav-dot"></span>FAQ</a></li>
-    <li><a href="#contact" onclick="closeDrawer()"><span class="nav-dot"></span>Contact</a></li>
+    <li><a href="#accueil" onclick="closeDrawer()" data-fr="Accueil" data-ar="الرئيسية"><span class="nav-dot"></span>Accueil</a></li>
+    <li><a href="#services" onclick="closeDrawer()" data-fr="Services" data-ar="أعمالنا"><span class="nav-dot"></span>Services</a></li>
+    <li><a href="#temoignages" onclick="closeDrawer()" data-fr="Témoignages" data-ar="آراء العملاء"><span class="nav-dot"></span>Témoignages</a></li>
+    <li><a href="#faq" onclick="closeDrawer()" data-fr="FAQ" data-ar="أسئلة شائعة"><span class="nav-dot"></span>FAQ</a></li>
+    <li><a href="#contact" onclick="closeDrawer()" data-fr="Contact" data-ar="تواصل"><span class="nav-dot"></span>Contact</a></li>
   </ul>
   <div class="drawer-footer">
     <a href="https://www.instagram.com/dvision_officiel" target="_blank">
@@ -831,26 +985,26 @@ footer {
 
 <!-- ── HERO ── -->
 <section class="hero" id="accueil">
-  <div class="hero-badge">✦ Places limitées — Commandez maintenant</div>
-  <h1>DVISION : Des miniatures YouTube<br>qui <em>dominent</em> en Algérie.</h1>
-  <p class="hero-sub">Boostez votre CTR, gagnez des vues et transformez votre audience en clients. Design professionnel livré en 24h.</p>
+  <div class="hero-badge" data-fr="✦ Places limitées — Commandez maintenant" data-ar="✦ أماكن محدودة — اطلب الآن">✦ Places limitées — Commandez maintenant</div>
+  <h1 data-fr="DVISION : Des miniatures YouTube<br>qui <em>dominent</em> en Algérie." data-ar="DVISION : صور يوتيوب مصغرة<br>تهيمن في <em>الجزائر</em>.">DVISION : Des miniatures YouTube<br>qui <em>dominent</em> en Algérie.</h1>
+  <p class="hero-sub" data-fr="Boostez votre CTR, gagnez des vues et transformez votre audience en clients. Design professionnel livré en 24h." data-ar="عزّز نسبة النقر لديك، اجمع المشاهدات وحوّل جمهورك إلى عملاء. تصميم احترافي يُسلَّم خلال 24 ساعة.">Boostez votre CTR, gagnez des vues et transformez votre audience en clients. Design professionnel livré en 24h.</p>
   <div class="hero-cta">
     <a href="#tarifs" class="btn-primary">Commander ma miniature en 24h →</a>
-    <a href="#services" class="btn-outline">Voir nos réalisations</a>
+    <a href="#services" class="btn-outline" data-fr="Voir nos réalisations" data-ar="اكتشف أعمالنا">Voir nos réalisations</a>
   </div>
   <div class="hero-stats">
-    <div class="stat"><span class="stat-icon red"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c0392b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><strong>+500</strong> créateurs accompagnés</div>
-    <div class="stat"><span class="stat-icon red"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c0392b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></span><strong>+3 000</strong> miniatures créées</div>
-    <div class="stat"><span class="stat-icon red"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c0392b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></span><strong>CTR</strong> optimisé garanti</div>
+    <div class="stat"><span class="stat-icon red"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c0392b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><strong>+500</strong> <span data-fr="créateurs accompagnés" data-ar="يوتيوبر استفادوا">créateurs accompagnés</span></div>
+    <div class="stat"><span class="stat-icon red"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c0392b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></span><strong>+3 000</strong> <span data-fr="miniatures créées" data-ar="صورة مصغرة تم إنشاؤها">miniatures créées</span></div>
+    <div class="stat"><span class="stat-icon red"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c0392b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></span><strong>CTR</strong> <span data-fr="optimisé garanti" data-ar="محسّن ومضمون">optimisé garanti</span></div>
   </div>
 </section>
 
 <!-- ── SHOWCASE ── -->
 <section class="showcase" id="services">
   <div class="showcase-header text-center reveal">
-    <div class="section-label">Nos réalisations</div>
-    <h2 class="section-title">Des designs qui font cliquer.</h2>
-    <p class="section-sub">Chaque miniature est conçue pour capturer l'attention dans les 3 premières secondes.</p>
+    <div class="section-label" data-fr="Nos réalisations" data-ar="أعمالنا">Nos réalisations</div>
+    <h2 class="section-title" data-fr="Des designs qui font cliquer." data-ar="تصاميم تجعلهم يضغطون.">Des designs qui font cliquer.</h2>
+    <p class="section-sub" data-fr="Chaque miniature est conçue pour capturer l'attention dans les 3 premières secondes." data-ar="كل صورة مصغرة مصمَّمة لتستقطب الانتباه في أقل من 3 ثوانٍ.">Chaque miniature est conçue pour capturer l'attention dans les 3 premières secondes.</p>
   </div>
 
   <div class="marquee-wrapper">
@@ -928,9 +1082,9 @@ footer {
 <!-- ── MÉTHODE ── -->
 <section class="methode" id="methode">
   <div class="text-center reveal">
-    <div class="section-label">Notre méthode</div>
-    <h2 class="section-title">Simple. Rapide. Efficace.</h2>
-    <p class="section-sub">Trois étapes pour une miniature qui génère des vues dès sa mise en ligne.</p>
+    <div class="section-label" data-fr="Notre méthode" data-ar="طريقة عملنا">Notre méthode</div>
+    <h2 class="section-title" data-fr="Simple. Rapide. Efficace." data-ar="بسيط. سريع. فعّال.">Simple. Rapide. Efficace.</h2>
+    <p class="section-sub" data-fr="Trois étapes pour une miniature qui génère des vues dès sa mise en ligne." data-ar="ثلاث خطوات للحصول على صورة مصغرة تجلب المشاهدات من اللحظة الأولى.">Trois étapes pour une miniature qui génère des vues dès sa mise en ligne.</p>
   </div>
   <div class="steps">
     <div class="step-card reveal delay-1">
@@ -943,8 +1097,8 @@ footer {
           <line x1="9" y1="16" x2="13" y2="16"/>
         </svg>
       </div>
-      <div class="step-title">Votre demande</div>
-      <div class="step-desc">Remplissez notre formulaire de commande avec les détails de votre vidéo. Plus c'est précis, meilleur sera le résultat.</div>
+      <div class="step-title" data-fr="Votre demande" data-ar="طلبك">Votre demande</div>
+      <div class="step-desc" data-fr="Remplissez notre formulaire de commande avec les détails de votre vidéo. Plus c'est précis, meilleur sera le résultat." data-ar="أملأ نموذج الطلب بتفاصيل الفيديو. كلما كانت المعلومات دقيقة، كانت النتيجة أفضل.">Remplissez notre formulaire de commande avec les détails de votre vidéo. Plus c'est précis, meilleur sera le résultat.</div>
     </div>
     <div class="step-card reveal delay-2">
       <div class="step-num">02</div>
@@ -956,8 +1110,8 @@ footer {
           <circle cx="11" cy="11" r="2"/>
         </svg>
       </div>
-      <div class="step-title">Création du design</div>
-      <div class="step-desc">Notre designer crée votre miniature optimisée pour le CTR. Typographie percutante, couleurs impactantes, composition parfaite.</div>
+      <div class="step-title" data-fr="Création du design" data-ar="إنشاء التصميم">Création du design</div>
+      <div class="step-desc" data-fr="Notre designer crée votre miniature optimisée pour le CTR. Typographie percutante, couleurs impactantes, composition parfaite." data-ar="يصمم خبيرنا صورتك المصغرة المُحسَّنة لزيادة النقرات. خط جذّاب، ألوان مؤثرة، تركيبة مثالية.">Notre designer crée votre miniature optimisée pour le CTR. Typographie percutante, couleurs impactantes, composition parfaite.</div>
     </div>
     <div class="step-card reveal delay-3">
       <div class="step-num">03</div>
@@ -969,8 +1123,8 @@ footer {
           <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/>
         </svg>
       </div>
-      <div class="step-title">Livraison en 24h</div>
-      <div class="step-desc">Recevez votre miniature HD (1280×720px) directement via WhatsApp. Révisions incluses jusqu'à votre satisfaction.</div>
+      <div class="step-title" data-fr="Livraison en 24h" data-ar="التسليم خلال 24 ساعة">Livraison en 24h</div>
+      <div class="step-desc" data-fr="Recevez votre miniature HD (1280×720px) directement via WhatsApp. Révisions incluses jusqu'à votre satisfaction." data-ar="تستلم صورتك المصغرة بجودة HD (1280×720px) مباشرة عبر واتساب. التعديلات مضمونة حتى تكون راضياً تماماً.">Recevez votre miniature HD (1280×720px) directement via WhatsApp. Révisions incluses jusqu'à votre satisfaction.</div>
     </div>
   </div>
 </section>
@@ -978,25 +1132,25 @@ footer {
 <!-- ── TARIFS ── -->
 <section class="tarifs" id="tarifs">
   <div class="text-center reveal">
-    <div class="section-label">Tarifs & Offres</div>
-    <h2 class="section-title">Une offre pour chaque étape<br>de votre croissance.</h2>
-    <p class="section-sub">Paiement à la livraison. Aucun risque.</p>
+    <div class="section-label" data-fr="Tarifs & Offres" data-ar="الأسعار والعروض">Tarifs & Offres</div>
+    <h2 class="section-title" data-fr="Une offre pour chaque étape<br>de votre croissance." data-ar="عرض مناسب لكل مرحلة<br>من مراحل نموّك.">Une offre pour chaque étape<br>de votre croissance.</h2>
+    <p class="section-sub" data-fr="Paiement à la livraison. Aucun risque." data-ar="الدفع عند الاستلام. بدون أي مخاطرة.">Paiement à la livraison. Aucun risque.</p>
   </div>
   <div class="pricing-grid">
     <!-- Starter -->
     <div class="price-card reveal delay-1">
       <div class="price-body">
         <div class="price-name">Starter</div>
-        <div class="price-qty">1 miniature</div>
+        <div class="price-qty" data-fr="1 miniature" data-ar="صورة مصغرة واحدة">1 miniature</div>
         <div class="price-amount">2 500 <span>Da</span></div>
         <div class="price-divider"></div>
         <ul class="price-features">
-          <li>Miniature HD 1280×720px</li>
-          <li>Livraison en 48 heures</li>
-          <li>2 révisions gratuites</li>
-          <li>Optimisation CTR de base</li>
-          <li class="dim">Révisions illimitées</li>
-          <li class="dim">Support WhatsApp prioritaire</li>
+          <li data-fr="Miniature HD 1280×720px" data-ar="صورة مصغرة HD بدقة 1280×720px">Miniature HD 1280×720px</li>
+          <li data-fr="Livraison en 48 heures" data-ar="تسليم خلال 48 ساعة">Livraison en 48 heures</li>
+          <li data-fr="2 révisions gratuites" data-ar="تعديلان مجانيان">2 révisions gratuites</li>
+          <li data-fr="Optimisation CTR de base" data-ar="تحسين أساسي لنسبة النقر">Optimisation CTR de base</li>
+          <li class="dim" data-fr="Révisions illimitées" data-ar="تعديلات غير محدودة">Révisions illimitées</li>
+          <li class="dim" data-fr="Support WhatsApp prioritaire" data-ar="دعم واتساب أولوية">Support WhatsApp prioritaire</li>
         </ul>
         <div class="price-cta">
           <button class="btn-price featured" onclick="openModal('Pack Starter — 2 500 Da')">Commander →</button>
@@ -1005,19 +1159,19 @@ footer {
     </div>
     <!-- Pro (featured) -->
     <div class="price-card featured reveal delay-2">
-      <div class="price-badge">⚡ Offre la plus populaire</div>
+      <div class="price-badge" data-fr="⚡ Offre la plus populaire" data-ar="⚡ الأكثر طلباً">⚡ Offre la plus populaire</div>
       <div class="price-body">
         <div class="price-name">Pack Pro</div>
-        <div class="price-qty">5 miniatures</div>
+        <div class="price-qty" data-fr="5 miniatures" data-ar="5 صور مصغرة">5 miniatures</div>
         <div class="price-amount">9 900 <span>Da</span></div>
         <div class="price-divider"></div>
         <ul class="price-features">
-          <li>5 miniatures HD captivantes</li>
-          <li>Optimisation CTR + titres</li>
-          <li>Livraison sous 48h par miniature</li>
-          <li>Révisions illimitées</li>
-          <li>Support WhatsApp 7j/7</li>
-          <li>Économisez 2 600 Da</li>
+          <li data-fr="5 miniatures HD captivantes" data-ar="5 صور مصغرة HD جذّابة">5 miniatures HD captivantes</li>
+          <li data-fr="Optimisation CTR + titres" data-ar="تحسين نسبة النقر + العناوين">Optimisation CTR + titres</li>
+          <li data-fr="Livraison sous 48h par miniature" data-ar="تسليم كل صورة في أقل من 48 ساعة">Livraison sous 48h par miniature</li>
+          <li data-fr="Révisions illimitées" data-ar="تعديلات غير محدودة">Révisions illimitées</li>
+          <li data-fr="Support WhatsApp 7j/7" data-ar="دعم واتساب 7 أيام في الأسبوع">Support WhatsApp 7j/7</li>
+          <li data-fr="Économisez 2 600 Da" data-ar="وفّر 2 600 دج">Économisez 2 600 Da</li>
         </ul>
         <div class="price-cta">
           <button class="btn-price featured" onclick="openModal('Pack Pro — 9 900 Da')">Commander maintenant →</button>
@@ -1028,16 +1182,16 @@ footer {
     <div class="price-card reveal delay-3">
       <div class="price-body">
         <div class="price-name">Elite</div>
-        <div class="price-qty">10 miniatures</div>
+        <div class="price-qty" data-fr="10 miniatures" data-ar="10 صور مصغرة">10 miniatures</div>
         <div class="price-amount">16 000 <span>Da</span></div>
         <div class="price-divider"></div>
         <ul class="price-features">
-          <li>10 miniatures HD premium</li>
-          <li>Optimisation CTR avancée</li>
-          <li>Révisions illimitées</li>
-          <li>Support prioritaire dédié</li>
-          <li>Coaching miniature inclus</li>
-          <li>Économisez 9 000 Da</li>
+          <li data-fr="10 miniatures HD premium" data-ar="10 صور مصغرة HD بريميوم">10 miniatures HD premium</li>
+          <li data-fr="Optimisation CTR avancée" data-ar="تحسين متقدم لنسبة النقر">Optimisation CTR avancée</li>
+          <li data-fr="Révisions illimitées" data-ar="تعديلات غير محدودة">Révisions illimitées</li>
+          <li data-fr="Support prioritaire dédié" data-ar="دعم مخصص بأولوية عالية">Support prioritaire dédié</li>
+          <li data-fr="Coaching miniature inclus" data-ar="كوتشينغ في التصاميم المصغرة مشمول">Coaching miniature inclus</li>
+          <li data-fr="Économisez 9 000 Da" data-ar="وفّر 9 000 دج">Économisez 9 000 Da</li>
         </ul>
         <div class="price-cta">
           <button class="btn-price featured" onclick="openModal('Pack Elite — 16 000 Da')">Commander →</button>
@@ -1050,74 +1204,74 @@ footer {
 <!-- ── TÉMOIGNAGES ── -->
 <section class="testimonials" id="temoignages">
   <div class="text-center reveal">
-    <div class="section-label">Avis clients</div>
-    <h2 class="section-title">Ils nous font confiance.</h2>
-    <p class="section-sub">Des créateurs algériens qui ont boosté leur CTR avec DVISION.</p>
+    <div class="section-label" data-fr="Avis clients" data-ar="آراء العملاء">Avis clients</div>
+    <h2 class="section-title" data-fr="Ils nous font confiance." data-ar="يثقون بنا.">Ils nous font confiance.</h2>
+    <p class="section-sub" data-fr="Des créateurs algériens qui ont boosté leur CTR avec DVISION." data-ar="يوتيوبرز جزائريون رفعوا نسبة النقر لديهم مع DVISION.">Des créateurs algériens qui ont boosté leur CTR avec DVISION.</p>
   </div>
   <div class="testi-grid">
     <div class="testi-card reveal delay-1">
       <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-      <div class="testi-text">"Depuis que j'utilise DVISION, mon CTR est passé de 3% à 8%. Les miniatures sont vraiment professionnelles et l'équipe est très réactive."</div>
+      <div class="testi-text" data-fr='"Depuis que j\'utilise DVISION, mon CTR est passé de 3% à 8%. Les miniatures sont vraiment professionnelles et l\'équipe est très réactive."' data-ar='"منذ أن بدأت مع DVISION، ارتفع معدل النقر لديّ من 3% إلى 8%. الصور المصغرة احترافية جداً والفريق يرد بسرعة."'>"Depuis que j'utilise DVISION, mon CTR est passé de 3% à 8%. Les miniatures sont vraiment professionnelles et l'équipe est très réactive."</div>
       <div class="testi-author">
         <div class="testi-avatar" style="background:rgba(192,57,43,0.2);color:#ff8a8a;">YS</div>
         <div>
           <div class="testi-name">Yacine Saadi</div>
-          <div class="testi-channel">TechDZ • 45k abonnés</div>
+          <div class="testi-channel">TechDZ • 45k <span data-fr="abonnés" data-ar="مشترك">abonnés</span></div>
         </div>
       </div>
     </div>
     <div class="testi-card reveal delay-2">
       <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-      <div class="testi-text">"Livraison rapide, design parfait. Ma vidéo sur les startups algériennes a explosé grâce à la miniature DVISION. Je recommande à 200%."</div>
+      <div class="testi-text" data-fr='"Livraison rapide, design parfait. Ma vidéo sur les startups algériennes a explosé grâce à la miniature DVISION. Je recommande à 200%."' data-ar='"تسليم سريع وتصميم رائع. فيديو الشركات الناشئة في الجزائر انفجر من المشاهدات بفضل صورة DVISION. أنصح به 200%."'>"Livraison rapide, design parfait. Ma vidéo sur les startups algériennes a explosé grâce à la miniature DVISION. Je recommande à 200%."</div>
       <div class="testi-author">
         <div class="testi-avatar" style="background:rgba(30,80,200,0.2);color:#6a9fff;">AB</div>
         <div>
           <div class="testi-name">Amine Benali</div>
-          <div class="testi-channel">Business Algérie • 82k abonnés</div>
+          <div class="testi-channel">Business Algérie • 82k <span data-fr="abonnés" data-ar="مشترك">abonnés</span></div>
         </div>
       </div>
     </div>
     <div class="testi-card reveal delay-3">
       <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-      <div class="testi-text">"Enfin un service de miniatures adapté au marché algérien. Paiement à la livraison, c'est rassurant. Qualité au rendez-vous à chaque fois."</div>
+      <div class="testi-text" data-fr='"Enfin un service de miniatures adapté au marché algérien. Paiement à la livraison, c\'est rassurant. Qualité au rendez-vous à chaque fois."' data-ar='"أخيراً خدمة صور مصغرة تناسب السوق الجزائري. الدفع عند الاستلام يمنح الثقة. الجودة حاضرة في كل مرة."'>"Enfin un service de miniatures adapté au marché algérien. Paiement à la livraison, c'est rassurant. Qualité au rendez-vous à chaque fois."</div>
       <div class="testi-author">
         <div class="testi-avatar" style="background:rgba(0,160,80,0.2);color:#4aff9a;">SM</div>
         <div>
           <div class="testi-name">Sara Mekki</div>
-          <div class="testi-channel">Cuisine DZ • 31k abonnés</div>
+          <div class="testi-channel">Cuisine DZ • 31k <span data-fr="abonnés" data-ar="مشترك">abonnés</span></div>
         </div>
       </div>
     </div>
     <div class="testi-card reveal delay-1">
       <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-      <div class="testi-text">"Le formulaire de commande est simple et l'équipe comprend exactement ce qu'on veut. Résultat toujours au-delà de mes attentes."</div>
+      <div class="testi-text" data-fr='"Le formulaire de commande est simple et l\'équipe comprend exactement ce qu\'on veut. Résultat toujours au-delà de mes attentes."' data-ar='"نموذج الطلب سهل والفريق يفهم بالضبط ما تريد. النتيجة دائماً تفوق توقعاتي."'>"Le formulaire de commande est simple et l'équipe comprend exactement ce qu'on veut. Résultat toujours au-delà de mes attentes."</div>
       <div class="testi-author">
         <div class="testi-avatar" style="background:rgba(180,100,0,0.2);color:#ffaa30;">KM</div>
         <div>
           <div class="testi-name">Karim Mansouri</div>
-          <div class="testi-channel">Vlogs Alger • 18k abonnés</div>
+          <div class="testi-channel">Vlogs Alger • 18k <span data-fr="abonnés" data-ar="مشترك">abonnés</span></div>
         </div>
       </div>
     </div>
     <div class="testi-card reveal delay-2">
       <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-      <div class="testi-text">"J'ai commandé le pack Pro et franchement, les 5 miniatures sont toutes différentes et toutes excellentes. Mon canal a grandi de 40% ce mois."</div>
+      <div class="testi-text" data-fr='"J\'ai commandé le pack Pro et franchement, les 5 miniatures sont toutes différentes et toutes excellentes. Mon canal a grandi de 40% ce mois."' data-ar='"طلبت باقة Pro وصراحةً، الصور الـ 5 مختلفة وكلها ممتازة. قناتي نمت بنسبة 40% هذا الشهر."'>"J'ai commandé le pack Pro et franchement, les 5 miniatures sont toutes différentes et toutes excellentes. Mon canal a grandi de 40% ce mois."</div>
       <div class="testi-author">
         <div class="testi-avatar" style="background:rgba(100,0,200,0.2);color:#c080ff;">RB</div>
         <div>
           <div class="testi-name">Riadh Bouzid</div>
-          <div class="testi-channel">Gaming DZ • 67k abonnés</div>
+          <div class="testi-channel">Gaming DZ • 67k <span data-fr="abonnés" data-ar="مشترك">abonnés</span></div>
         </div>
       </div>
     </div>
     <div class="testi-card reveal delay-3">
       <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-      <div class="testi-text">"Service professionnel, communication parfaite. La miniature pour ma vidéo actualité était prête en moins de 20h. Incroyable."</div>
+      <div class="testi-text" data-fr='"Service professionnel, communication parfaite. La miniature pour ma vidéo actualité était prête en moins de 20h. Incroyable."' data-ar='"خدمة احترافية وتواصل مثالي. صورة فيديو الأخبار كانت جاهزة في أقل من 20 ساعة. لا يُصدَّق."'>"Service professionnel, communication parfaite. La miniature pour ma vidéo actualité était prête en moins de 20h. Incroyable."</div>
       <div class="testi-author">
         <div class="testi-avatar" style="background:rgba(192,57,43,0.15);color:#ff7070;">NA</div>
         <div>
           <div class="testi-name">Nadir Aït</div>
-          <div class="testi-channel">Actu Maghreb • 24k abonnés</div>
+          <div class="testi-channel">Actu Maghreb • 24k <span data-fr="abonnés" data-ar="مشترك">abonnés</span></div>
         </div>
       </div>
     </div>
@@ -1127,44 +1281,44 @@ footer {
 <!-- ── FAQ ── -->
 <section class="faq" id="faq">
   <div class="text-center reveal">
-    <div class="section-label">FAQ</div>
-    <h2 class="section-title">Questions fréquentes.</h2>
+    <div class="section-label" data-fr="FAQ" data-ar="أسئلة شائعة">FAQ</div>
+    <h2 class="section-title" data-fr="Questions fréquentes." data-ar="أسئلة يسألها الجميع.">Questions fréquentes.</h2>
   </div>
   <div class="faq-list">
     <div class="faq-item reveal">
       <div class="faq-q" onclick="toggleFaq(this)">
-        <span>Comment se passe la commande ?</span>
+        <span data-fr="Comment se passe la commande ?" data-ar="كيف تتم عملية الطلب؟">Comment se passe la commande ?</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 9l6 6 6-6"/></svg>
       </div>
-      <div class="faq-a">Cliquez sur un bouton de commande, remplissez le formulaire avec les détails de votre vidéo, puis nous vous recontactons sur WhatsApp pour finaliser. Paiement uniquement à la livraison.</div>
+      <div class="faq-a" data-fr="Cliquez sur un bouton de commande, remplissez le formulaire avec les détails de votre vidéo, puis nous vous recontactons sur WhatsApp pour finaliser. Paiement uniquement à la livraison." data-ar="اضغط على زر الطلب، أملأ النموذج بتفاصيل الفيديو، ثم نتواصل معك عبر واتساب لإتمام الطلب. الدفع فقط عند الاستلام.">Cliquez sur un bouton de commande, remplissez le formulaire avec les détails de votre vidéo, puis nous vous recontactons sur WhatsApp pour finaliser. Paiement uniquement à la livraison.</div>
     </div>
     <div class="faq-item reveal">
       <div class="faq-q" onclick="toggleFaq(this)">
-        <span>Quel est le délai de livraison ?</span>
+        <span data-fr="Quel est le délai de livraison ?" data-ar="ما هو وقت التسليم؟">Quel est le délai de livraison ?</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 9l6 6 6-6"/></svg>
       </div>
-      <div class="faq-a">La livraison standard est de 24 à 48 heures après réception de tous les détails. Pour les commandes urgentes, contactez-nous directement sur WhatsApp.</div>
+      <div class="faq-a" data-fr="La livraison standard est de 24 à 48 heures après réception de tous les détails. Pour les commandes urgentes, contactez-nous directement sur WhatsApp." data-ar="وقت التسليم المعتاد بين 24 و48 ساعة بعد استلام جميع التفاصيل. للطلبات العاجلة، تواصل معنا مباشرة عبر واتساب.">La livraison standard est de 24 à 48 heures après réception de tous les détails. Pour les commandes urgentes, contactez-nous directement sur WhatsApp.</div>
     </div>
     <div class="faq-item reveal">
       <div class="faq-q" onclick="toggleFaq(this)">
-        <span>Comment s'effectue le paiement ?</span>
+        <span data-fr="Comment s'effectue le paiement ?" data-ar="كيف يتم الدفع؟">Comment s'effectue le paiement ?</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 9l6 6 6-6"/></svg>
       </div>
-      <div class="faq-a">Nous acceptons les paiements par CCP, Baridimob, ou BaridiPay. Toujours paiement à la livraison — vous payez après avoir reçu et validé votre miniature.</div>
+      <div class="faq-a" data-fr="Nous acceptons les paiements par CCP, Baridimob, ou BaridiPay. Toujours paiement à la livraison — vous payez après avoir reçu et validé votre miniature." data-ar="نقبل الدفع عبر CCP أو Baridimob أو BaridiPay. الدفع دائماً عند الاستلام — تدفع فقط بعد ما تستلم وتوافق على صورتك المصغرة.">Nous acceptons les paiements par CCP, Baridimob, ou BaridiPay. Toujours paiement à la livraison — vous payez après avoir reçu et validé votre miniature.</div>
     </div>
     <div class="faq-item reveal">
       <div class="faq-q" onclick="toggleFaq(this)">
-        <span>Combien de révisions sont incluses ?</span>
+        <span data-fr="Combien de révisions sont incluses ?" data-ar="كم عدد التعديلات المضمّنة؟">Combien de révisions sont incluses ?</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 9l6 6 6-6"/></svg>
       </div>
-      <div class="faq-a">Le Pack Starter inclut 2 révisions. Les packs Pro et Elite bénéficient de révisions illimitées jusqu'à votre entière satisfaction.</div>
+      <div class="faq-a" data-fr="Le Pack Starter inclut 2 révisions. Les packs Pro et Elite bénéficient de révisions illimitées jusqu'à votre entière satisfaction." data-ar="باقة Starter تشمل تعديلين اثنين. باقتا Pro و Elite تتضمنان تعديلات غير محدودة حتى تكون راضياً تماماً.">Le Pack Starter inclut 2 révisions. Les packs Pro et Elite bénéficient de révisions illimitées jusqu'à votre entière satisfaction.</div>
     </div>
     <div class="faq-item reveal">
       <div class="faq-q" onclick="toggleFaq(this)">
-        <span>Dans quel format est livrée la miniature ?</span>
+        <span data-fr="Dans quel format est livrée la miniature ?" data-ar="بأي صيغة تُسلَّم الصورة المصغرة؟">Dans quel format est livrée la miniature ?</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 9l6 6 6-6"/></svg>
       </div>
-      <div class="faq-a">Vous recevez votre miniature en HD (1280×720px) au format JPG/PNG, prête à être uploadée directement sur YouTube. Le fichier source (PSD) est disponible sur demande.</div>
+      <div class="faq-a" data-fr="Vous recevez votre miniature en HD (1280×720px) au format JPG/PNG, prête à être uploadée directement sur YouTube. Le fichier source (PSD) est disponible sur demande." data-ar="تستلم صورتك المصغرة بجودة HD بدقة 1280×720px بصيغة JPG/PNG، جاهزة للرفع مباشرة على يوتيوب. الملف المصدري (PSD) متاح عند الطلب.">Vous recevez votre miniature en HD (1280×720px) au format JPG/PNG, prête à être uploadée directement sur YouTube. Le fichier source (PSD) est disponible sur demande.</div>
     </div>
   </div>
 </section>
@@ -1172,9 +1326,9 @@ footer {
 <!-- ── CTA BANNER ── -->
 <section class="cta-banner" id="contact">
   <div class="reveal">
-    <div class="section-label" style="justify-content:center;">Prêt à dominer ?</div>
-    <h2>Votre prochaine vidéo mérite<br>une miniature qui claque.</h2>
-    <p>Rejoignez les créateurs algériens qui font confiance à DVISION pour leur image YouTube.</p>
+    <div class="section-label" style="justify-content:center;" data-fr="Prêt à dominer ?" data-ar="مستعد تتصدّر؟">Prêt à dominer ?</div>
+    <h2 data-fr="Votre prochaine vidéo mérite<br>une miniature qui claque." data-ar="فيديوك القادم يستحق<br>صورة مصغرة تلفت الأنظار.">Votre prochaine vidéo mérite<br>une miniature qui claque.</h2>
+    <p data-fr="Rejoignez les créateurs algériens qui font confiance à DVISION pour leur image YouTube." data-ar="انضم إلى اليوتيوبرز الجزائريين الذين يثقون في DVISION لصورهم على يوتيوب.">Rejoignez les créateurs algériens qui font confiance à DVISION pour leur image YouTube.</p>
     <div class="hero-cta">
       <a href="#tarifs" class="btn-primary">Commander ma miniature →</a>
     </div>
@@ -1185,9 +1339,9 @@ footer {
 <footer>
   <div class="footer-logo">D<span>V</span>ISION</div>
   <div class="footer-links">
-    <a href="#">Conditions Générales de Vente</a>
-    <a href="#">Conditions Générales d'Utilisation</a>
-    <a href="#">Politique de confidentialité</a>
+    <a href="#" data-fr="Conditions Générales de Vente" data-ar="شروط البيع العامة">Conditions Générales de Vente</a>
+    <a href="#" data-fr="Conditions Générales d'Utilisation" data-ar="شروط الاستخدام العامة">Conditions Générales d'Utilisation</a>
+    <a href="#" data-fr="Politique de confidentialité" data-ar="سياسة الخصوصية">Politique de confidentialité</a>
   </div>
   <div class="footer-right">
     <a href="https://www.instagram.com/dvision_officiel" target="_blank">
@@ -1207,46 +1361,129 @@ footer {
 <div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-title">Commander une miniature</div>
-    <div class="modal-sub">Remplissez le formulaire — nous vous contacterons sur WhatsApp dans les 24h.</div>
+    <div class="modal-title" data-fr="Commander une miniature" data-ar="اطلب صورة مصغرة">Commander une miniature</div>
+    <div class="modal-sub" data-fr="Remplissez le formulaire — nous vous contacterons sur WhatsApp dans les 24h." data-ar="أملأ النموذج — سنتواصل معك على واتساب خلال 24 ساعة.">Remplissez le formulaire — nous vous contacterons sur WhatsApp dans les 24h.</div>
     <div class="modal-pack-badge" id="modal-pack-label">Pack Starter</div>
 
     <div class="form-group">
-      <label>Nom de la chaîne YouTube *</label>
+      <label data-fr="Nom de la chaîne YouTube *" data-ar="اسم قناة يوتيوب *">Nom de la chaîne YouTube *</label>
       <input type="text" id="f-channel" placeholder="Ex : TechDZ Officiel">
     </div>
     <div class="form-group">
-      <label>Titre de la vidéo *</label>
+      <label data-fr="Titre de la vidéo *" data-ar="عنوان الفيديو *">Titre de la vidéo *</label>
       <input type="text" id="f-title" placeholder="Ex : Comment gagner de l'argent en Algérie en 2025">
     </div>
     <div class="form-group">
-      <label>Type de miniature / Domaine *</label>
+      <label data-fr="Type de miniature / Domaine *" data-ar="نوع الصورة / المجال *">Type de miniature / Domaine *</label>
       <select id="f-type">
-        <option value="">— Sélectionnez une catégorie —</option>
+        <option value="" data-fr="— Sélectionnez une catégorie —" data-ar="— اختر فئة —">— Sélectionnez une catégorie —</option>
         <option>Gaming</option>
         <option>Vlogs</option>
-        <option>Éducation</option>
+        <option data-fr="Éducation" data-ar="تعليم">Éducation</option>
         <option>Business</option>
-        <option>Actualité</option>
-        <option>Cuisine</option>
+        <option data-fr="Actualité" data-ar="أخبار">Actualité</option>
+        <option data-fr="Cuisine" data-ar="طبخ">Cuisine</option>
         <option>High-Tech</option>
-        <option>Autre</option>
+        <option data-fr="Autre" data-ar="أخرى">Autre</option>
       </select>
     </div>
     <div class="form-group">
-      <label>Détails & Description de la miniature souhaitée *</label>
+      <label data-fr="Détails & Description de la miniature souhaitée *" data-ar="تفاصيل ووصف الصورة المطلوبة *">Détails & Description de la miniature souhaitée *</label>
       <textarea id="f-desc" placeholder="Décrivez ce que vous souhaitez : couleurs, style, texte à afficher, ambiance générale..."></textarea>
     </div>
 
     <button class="btn-submit" onclick="submitOrder()">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.938 0C5.373 0 0 5.373 0 11.938c0 2.105.552 4.076 1.518 5.786L0 24l6.435-1.687a11.9 11.9 0 005.503 1.355C18.5 23.668 24 18.295 24 11.73 24 5.166 18.5.002 11.938.002zm0 21.785a9.845 9.845 0 01-5.019-1.37l-.36-.214-3.736.979 1.001-3.648-.235-.374a9.84 9.84 0 01-1.506-5.264c0-5.44 4.428-9.868 9.877-9.868 5.449 0 9.877 4.428 9.877 9.868 0 5.44-4.428 9.891-9.9 9.891z"/></svg>
-      Envoyer ma demande sur WhatsApp
+      <span data-fr="Envoyer ma demande sur WhatsApp" data-ar="أرسل طلبي عبر واتساب">Envoyer ma demande sur WhatsApp</span>
     </button>
-    <div class="modal-note">En soumettant ce formulaire, vous serez redirigé vers WhatsApp pour finaliser votre commande. Paiement CCP ou Baridimob à la livraison.</div>
+    <div class="modal-note" data-fr="En soumettant ce formulaire, vous serez redirigé vers WhatsApp pour finaliser votre commande. Paiement CCP ou Baridimob à la livraison." data-ar="بإرسال هذا النموذج ستُحوَّل إلى واتساب لإتمام طلبك. الدفع عبر CCP أو Baridimob عند الاستلام.">En soumettant ce formulaire, vous serez redirigé vers WhatsApp pour finaliser votre commande. Paiement CCP ou Baridimob à la livraison.</div>
   </div>
 </div>
 
 <script>
+// ── LANGUAGE TOGGLE ──
+let currentLang = 'fr';
+
+function updateLangSlider() {
+  const activeOpt = currentLang === 'fr'
+    ? document.getElementById('lang-opt-fr')
+    : document.getElementById('lang-opt-ar');
+  const inactiveOpt = currentLang === 'fr'
+    ? document.getElementById('lang-opt-ar')
+    : document.getElementById('lang-opt-fr');
+  const slider = document.getElementById('lang-slider');
+  const btn = document.getElementById('lang-toggle-btn');
+  if (!activeOpt || !slider) return;
+
+  const btnRect = btn.getBoundingClientRect();
+  const optRect = activeOpt.getBoundingClientRect();
+  slider.style.left = (optRect.left - btnRect.left) + 'px';
+  slider.style.width = optRect.width + 'px';
+
+  activeOpt.classList.add('active');
+  inactiveOpt.classList.remove('active');
+}
+
+function toggleLang() {
+  currentLang = currentLang === 'fr' ? 'ar' : 'fr';
+  const html = document.documentElement;
+  const drawer = document.getElementById('drawer');
+
+  // Freeze drawer transition to prevent it from animating during lang switch
+  drawer.classList.add('no-transition');
+
+  if (currentLang === 'ar') {
+    html.setAttribute('lang', 'ar');
+    html.setAttribute('dir', 'rtl');
+  } else {
+    html.setAttribute('lang', 'fr');
+    html.removeAttribute('dir');
+  }
+
+  updateLangSlider();
+
+  // Re-enable transition after the browser has applied the new transform
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      drawer.classList.remove('no-transition');
+    });
+  });
+
+  // Translate all elements with data-fr / data-ar
+  document.querySelectorAll('[data-fr][data-ar]').forEach(el => {
+    const txt = el.getAttribute('data-' + currentLang);
+    if (!txt) return;
+
+    const htmlTags = ['H1','H2','P','DIV'];
+    if (htmlTags.includes(el.tagName) && (txt.includes('<') || txt.includes('>'))) {
+      el.innerHTML = txt;
+    } else if (el.tagName === 'OPTION') {
+      el.textContent = txt;
+    } else {
+      el.textContent = txt;
+    }
+  });
+
+  // Drawer nav: handle separately to keep the nav-dot span
+  document.querySelectorAll('.drawer-nav a[data-fr][data-ar]').forEach(el => {
+    const txt = el.getAttribute('data-' + currentLang);
+    if (!txt) return;
+    const dot = el.querySelector('.nav-dot');
+    el.textContent = txt;
+    if (dot) el.prepend(dot);
+  });
+
+  document.title = currentLang === 'ar'
+    ? 'DVISION — صور يوتيوب مصغرة تهيمن في الجزائر'
+    : 'DVISION — Miniatures YouTube qui dominent';
+}
+
+// Init slider on load
+window.addEventListener('load', () => {
+  // Small delay to let layout paint
+  requestAnimationFrame(() => updateLangSlider());
+});
+
 // ── DRAWER MENU ──
 function openDrawer() {
   document.getElementById('drawer').classList.add('open');

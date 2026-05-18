@@ -118,8 +118,125 @@ nav a:hover { color: #fff; background: rgba(255,255,255,0.06); }
 .btn-instagram:hover { color: #fff; border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.04); }
 .btn-instagram svg { width: 16px; height: 16px; }
 
-.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
-.hamburger span { display: block; width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: all 0.3s; }
+.hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 6px;
+  background: none; border: none;
+  z-index: 300;
+}
+.hamburger span {
+  display: block; width: 24px; height: 2px;
+  background: var(--text); border-radius: 2px;
+  transition: transform 0.4s cubic-bezier(0.77,0,0.175,1),
+              opacity 0.3s ease,
+              width 0.3s ease;
+  transform-origin: center;
+}
+.hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.active span:nth-child(2) { opacity: 0; width: 0; }
+.hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── MOBILE DRAWER ── */
+.drawer-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(4px);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.drawer-overlay.open { opacity: 1; pointer-events: all; }
+
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: 40%; z-index: 201;
+  background: #000;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding: 60px clamp(20px, 4vw, 40px);
+  transform: translateX(100%);
+  transition: transform 0.55s cubic-bezier(0.77,0,0.175,1);
+  border-left: 1px solid rgba(255,255,255,0.06);
+}
+.drawer.open { transform: translateX(0); }
+
+.drawer-close {
+  position: absolute; top: 24px; right: 28px;
+  background: none; border: none; cursor: pointer;
+  color: var(--text-muted); padding: 8px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  transition: color 0.25s, background 0.25s, transform 0.3s;
+}
+.drawer-close:hover {
+  color: #fff; background: rgba(255,255,255,0.08);
+  transform: rotate(90deg);
+}
+.drawer-close svg { width: 22px; height: 22px; }
+
+.drawer-nav {
+  display: flex; flex-direction: column; gap: 8px;
+  list-style: none;
+}
+.drawer-nav li { overflow: hidden; }
+
+.drawer-nav a {
+  display: flex; align-items: center; gap: 12px;
+  color: rgba(255,255,255,0.55);
+  font-family: 'Syne', sans-serif;
+  font-weight: 700; font-size: clamp(1.1rem, 4vw, 1.8rem);
+  text-decoration: none;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  position: relative;
+  letter-spacing: -0.01em;
+  transition: color 0.3s ease, padding-left 0.3s ease;
+}
+.drawer-nav a::before {
+  content: '';
+  position: absolute; left: 0; bottom: -1px;
+  height: 1px; width: 0;
+  background: var(--red-accent);
+  transition: width 0.35s cubic-bezier(0.77,0,0.175,1);
+}
+.drawer-nav a:hover { color: #fff; padding-left: 12px; }
+.drawer-nav a:hover::before { width: 100%; }
+
+.drawer-nav a .nav-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--red-accent);
+  opacity: 0.8;
+  flex-shrink: 0;
+}
+
+/* Stagger animation pour les liens au slide-in */
+.drawer.open .drawer-nav li:nth-child(1) a { animation: drawerLinkIn 0.4s ease 0.2s both; }
+.drawer.open .drawer-nav li:nth-child(2) a { animation: drawerLinkIn 0.4s ease 0.27s both; }
+.drawer.open .drawer-nav li:nth-child(3) a { animation: drawerLinkIn 0.4s ease 0.34s both; }
+.drawer.open .drawer-nav li:nth-child(4) a { animation: drawerLinkIn 0.4s ease 0.41s both; }
+.drawer.open .drawer-nav li:nth-child(5) a { animation: drawerLinkIn 0.4s ease 0.48s both; }
+@keyframes drawerLinkIn {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.drawer-footer {
+  position: absolute; bottom: 40px; left: clamp(20px, 4vw, 40px); right: clamp(20px, 4vw, 40px);
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.78rem; color: var(--text-dim);
+}
+.drawer-footer::before {
+  content: ''; flex: 1; height: 1px;
+  background: rgba(255,255,255,0.07);
+}
+.drawer-footer a {
+  color: var(--text-muted); text-decoration: none;
+  display: flex; align-items: center; gap: 6px;
+  transition: color 0.2s;
+}
+.drawer-footer a:hover { color: #fff; }
+.drawer-footer svg { width: 14px; height: 14px; }
 
 /* ── HERO ── */
 .hero {
@@ -623,14 +740,7 @@ footer {
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   nav { display: none; }
-  nav.mobile-open {
-    display: flex; flex-direction: column;
-    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(10,5,5,0.97); z-index: 99;
-    align-items: center; justify-content: center; gap: 16px;
-  }
-  nav.mobile-open a { font-size: 1.3rem; padding: 14px 28px; }
-  .hamburger { display: flex; z-index: 101; }
+  .hamburger { display: flex !important; }
   .btn-instagram span { display: none; }
   .steps, .pricing-grid, .testi-grid, .thumbnails-grid { grid-template-columns: 1fr; }
   .pricing-grid { gap: 16px; }
@@ -639,6 +749,7 @@ footer {
   footer { flex-direction: column; text-align: center; }
   .footer-links, .footer-right { justify-content: center; }
   .thumbnails-grid { grid-template-columns: 1fr 1fr; }
+  .drawer { width: 55%; }
 }
 @media (max-width: 600px) {
   .thumbnails-grid { grid-template-columns: 1fr; }
@@ -646,6 +757,7 @@ footer {
   .hero h1 { font-size: 2rem; }
   .hero-cta { flex-direction: column; align-items: center; }
   .btn-primary, .btn-outline { width: 100%; justify-content: center; }
+  .drawer { width: 65%; }
 }
 </style>
 </head>
@@ -681,11 +793,41 @@ footer {
       </svg>
       <span>@dvision_officiel</span>
     </a>
-    <div class="hamburger" id="hamburger" onclick="toggleNav()">
-      <span></span><span></span><span></span>
-    </div>
+    <button class="hamburger" id="hamburger-btn" onclick="openDrawer()" aria-label="Ouvrir le menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </div>
 </header>
+
+<!-- ── DRAWER MENU ── -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <button class="drawer-close" onclick="closeDrawer()" aria-label="Fermer le menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <line x1="18" y1="6" x2="6" y2="18"/>
+      <line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </button>
+  <ul class="drawer-nav">
+    <li><a href="#accueil" onclick="closeDrawer()"><span class="nav-dot"></span>Accueil</a></li>
+    <li><a href="#services" onclick="closeDrawer()"><span class="nav-dot"></span>Services</a></li>
+    <li><a href="#temoignages" onclick="closeDrawer()"><span class="nav-dot"></span>Témoignages</a></li>
+    <li><a href="#faq" onclick="closeDrawer()"><span class="nav-dot"></span>FAQ</a></li>
+    <li><a href="#contact" onclick="closeDrawer()"><span class="nav-dot"></span>Contact</a></li>
+  </ul>
+  <div class="drawer-footer">
+    <a href="https://www.instagram.com/dvision_officiel" target="_blank">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+        <circle cx="12" cy="12" r="4"/>
+        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+      </svg>
+      @dvision_officiel
+    </a>
+  </div>
+</div>
 
 <!-- ── HERO ── -->
 <section class="hero" id="accueil">
@@ -693,7 +835,7 @@ footer {
   <h1>DVISION : Des miniatures YouTube<br>qui <em>dominent</em> en Algérie.</h1>
   <p class="hero-sub">Boostez votre CTR, gagnez des vues et transformez votre audience en clients. Design professionnel livré en 24h.</p>
   <div class="hero-cta">
-    <a href="#contact" class="btn-primary" onclick="openModal('Starter')">Commander ma miniature en 24h →</a>
+    <a href="#tarifs" class="btn-primary">Commander ma miniature en 24h →</a>
     <a href="#services" class="btn-outline">Voir nos réalisations</a>
   </div>
   <div class="hero-stats">
@@ -857,7 +999,7 @@ footer {
           <li class="dim">Support WhatsApp prioritaire</li>
         </ul>
         <div class="price-cta">
-          <button class="btn-price" onclick="openModal('Pack Starter — 2 500 Da')">Commencer →</button>
+          <button class="btn-price featured" onclick="openModal('Pack Starter — 2 500 Da')">Commander →</button>
         </div>
       </div>
     </div>
@@ -898,7 +1040,7 @@ footer {
           <li>Économisez 9 000 Da</li>
         </ul>
         <div class="price-cta">
-          <button class="btn-price" onclick="openModal('Pack Elite — 16 000 Da')">Commencer →</button>
+          <button class="btn-price featured" onclick="openModal('Pack Elite — 16 000 Da')">Commander →</button>
         </div>
       </div>
     </div>
@@ -1034,7 +1176,7 @@ footer {
     <h2>Votre prochaine vidéo mérite<br>une miniature qui claque.</h2>
     <p>Rejoignez les créateurs algériens qui font confiance à DVISION pour leur image YouTube.</p>
     <div class="hero-cta">
-      <a href="#" class="btn-primary" onclick="openModal('Pack Pro — 9 900 Da'); return false;">Commander ma miniature →</a>
+      <a href="#tarifs" class="btn-primary">Commander ma miniature →</a>
     </div>
   </div>
 </section>
@@ -1105,14 +1247,23 @@ footer {
 </div>
 
 <script>
-// ── NAV MOBILE ──
-function toggleNav() {
-  const nav = document.getElementById('main-nav');
-  nav.classList.toggle('mobile-open');
+// ── DRAWER MENU ──
+function openDrawer() {
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawer-overlay').classList.add('open');
+  document.getElementById('hamburger-btn').classList.add('active');
+  document.body.style.overflow = 'hidden';
 }
-function closeNav() {
-  document.getElementById('main-nav').classList.remove('mobile-open');
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawer-overlay').classList.remove('open');
+  document.getElementById('hamburger-btn').classList.remove('active');
+  document.body.style.overflow = '';
 }
+
+// ── NAV MOBILE (legacy) ──
+function toggleNav() { openDrawer(); }
+function closeNav() { closeDrawer(); }
 
 // ── SCROLL REVEAL ──
 const observer = new IntersectionObserver((entries) => {
@@ -1178,7 +1329,7 @@ document.querySelectorAll('.thumb-card').forEach(card => {
 });
 
 // ── ESCAPE KEY ──
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeDrawer(); } });
 </script>
 </body>
 </html>
